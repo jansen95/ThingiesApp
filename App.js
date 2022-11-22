@@ -1,17 +1,20 @@
 import React, {} from "react";
 import ThemeProvider from "./state/ThemeProvider";
 import TodoListProvider from "./state/TodoListProvider";
-import TodoListsTextScreen from "./screens/TodoListsTextScreen";
-
+import {NavigationContainer} from "@react-navigation/native";
+import LoginStackNavigator from "./navigation/LoginStackNavigator";
 
 export default function App() {
 
     return (
         <TodoListProvider>
             <ThemeProvider>
-                <TodoListsTextScreen/>
+                <NavigationContainer>
+                    <LoginStackNavigator>
+                        {/*<TodoListsTextScreen/>*/}
+                    </LoginStackNavigator>
+                </NavigationContainer>
             </ThemeProvider>
         </TodoListProvider>
-
     );
 }
