@@ -30,7 +30,7 @@ This tutorial was written 22.11.2022. The LTS version might be a different one a
 If the installation was successful you can start cloning the repository.
 
 ## Download Expo Go App
-If you have an iPhone at home download this the Expo Go app from the App Store:
+If you have an iPhone at home download this the Expo Go app from the App Store:\
 https://apps.apple.com/de/app/expo-go/id982107779
 
 For Android download it from the Play Store:\
