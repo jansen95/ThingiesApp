@@ -65,7 +65,7 @@ your phone the same network to make Expo work.**\
 
 
 ## Pushing & Merging
-The master branch is a protected branch. You can't push your commits directly into this branch. First you have to setup 
+The master branch is a **protected branch**. You can't push your commits directly into this branch. First you have to setup 
 a new branch, push your commit to the new branch, and do a pull request on GitHub to merge your commits into the master
 branch. Please choose your branch names in a descriptive manner. For example if you are currently working on the map-, todo-,
 or calendar screen feature name your branch the respective branch name:
