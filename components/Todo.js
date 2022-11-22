@@ -1,6 +1,6 @@
 import React from "react";
 import {Button, Text, View} from "react-native";
-import {ACTIONS} from "./constants/Constants";
+import {ACTIONS} from "../constants/ReducerActions";
 
 
 export default function Todo({todo, dispatch}) {

@@ -1,8 +1,8 @@
 import {Button, SafeAreaView} from "react-native";
-import {useTheme, useThemeUpdate} from "./state/ThemeProvider";
+import {useTheme, useThemeUpdate} from "../state/ThemeProvider";
 
 
-export default function FunctionContextComponent() {
+export default function ThemeToggleExampleComponent() {
     const darkTheme = useTheme();
     const toggleTheme = useThemeUpdate();
 
