@@ -5,6 +5,9 @@ import SignInScreen from "../screens/SignInScreen";
 import MainScreen from "../screens/MainScreen";
 import {AuthContext} from "../state/AuthContext";
 import SignUpScreen from "../screens/SignUpScreen";
+import {useThemeType} from "../state/ThemeProvider";
+import {THEME_COLORS} from "../state/ThemeColors";
+import ThemeToggleSwitch from "../components/ThemeToggleSwitch";
 
 export default function LoginStackNavigator() {
     const [state, dispatch] = React.useReducer(
@@ -82,10 +85,19 @@ export default function LoginStackNavigator() {
     );
 
     const Stack = createNativeStackNavigator();
+    const darkTheme = useThemeType();
 
     return (
         <AuthContext.Provider value={authContext}>
-            <Stack.Navigator>
+            <Stack.Navigator
+                screenOptions={{
+                    headerStyle: {
+                        backgroundColor: darkTheme ? THEME_COLORS.DARK_THEME.BACKGROUND:THEME_COLORS.LIGHT_THEME.BACKGROUND,
+                    },
+                    headerTintColor: darkTheme ? THEME_COLORS.DARK_THEME.ON_BACKGROUND:THEME_COLORS.LIGHT_THEME.ON_BACKGROUND,
+                    headerRight: () => (<ThemeToggleSwitch/>),
+                }}
+            >
                 {state.userToken == null ? (
                     <>
                         <Stack.Screen name="SignIn" component={SignInScreen} />
