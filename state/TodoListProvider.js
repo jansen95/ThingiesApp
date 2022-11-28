@@ -18,9 +18,9 @@ export default function TodoListProvider({children}) {
                 {todoId: 4, name: "Todo3", gps: "6° 36' 53\" O / 51° 50' 22\" N", date: "2022-12-03"},
             ]},
         {listId: 5, name: "List2", todos:[
-                {todoId: 6, name: "Todo4", gps: "6° 36' 54\" O / 51° 50' 22\" N", date: Date.UTC(2022,12,4,12,30)},
-                {todoId: 7, name: "Todo5", gps: "6° 36' 55\" O / 51° 50' 22\" N", date: Date.UTC(2022,12,5,12,30)},
-                {todoId: 8, name: "Todo6", gps: "6° 36' 56\" O / 51° 50' 22\" N", date: Date.UTC(2022,12,6,12,30)},
+                {todoId: 6, name: "Todo4", gps: "6° 36' 54\" O / 51° 50' 22\" N", date: "2022-12-04"},
+                {todoId: 7, name: "Todo5", gps: "6° 36' 55\" O / 51° 50' 22\" N", date: "2022-12-05"},
+                {todoId: 8, name: "Todo6", gps: "6° 36' 56\" O / 51° 50' 22\" N", date: "2022-12-06"},
             ]},
     ])
 
