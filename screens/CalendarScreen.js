@@ -29,6 +29,9 @@ LocaleConfig.defaultLocale = 'Ger';
 export default function CalendarScreen() {
     const todoLists = useTodoLists();
 
+    let date;
+    date = new Date().toString();
+
     let markedDay = {};
 
     todoLists.map(({todos}) => {
@@ -45,19 +48,19 @@ export default function CalendarScreen() {
 
     return (
         <View>
-            <CalendarList
-                markingType={'custom'}
-                markedDates={markedDay}
+                <CalendarList
+                    markingType={'custom'}
+                    markedDates={markedDay}
 
-                pastScrollRange={0}
-                futureScrollRange={36}
-                showScrollIndicator={true}
+                    pastScrollRange={0}
+                    futureScrollRange={36}
+                    showScrollIndicator={true}
 
-                firstDay={0}
-                showWeekNumbers={true}
-                hideDayNames={false}
-                minDate={new Date()}
-            />
+                    firstDay={0}
+                    showWeekNumbers={true}
+                    hideDayNames={false}
+                    minDate={date}
+                />
         </View>
     )
 }
