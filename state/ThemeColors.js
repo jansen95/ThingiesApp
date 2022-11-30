@@ -34,15 +34,15 @@ export const THEME_COLORS = {
         SECONDARY_050: "#C8FFF4",
 
         ON_PRIMARY_OPACITY: {
-            HIGH_EMPHASIS: "100%",
-            MEDIUM_EMPHASIS: "74%",
-            DISABLED: "61", //38%
+            HIGH_EMPHASIS:  "FF", //100%
+            MEDIUM_EMPHASIS:"BD", //74%
+            DISABLED:       "61", //38%
         },
 
         ON_SURFACE_OPACITY: {
-            HIGH_EMPHASIS: "87%",
-            MEDIUM_EMPHASIS: "60%",
-            DISABLED: "38%",
+            HIGH_EMPHASIS:  "DE", //87%
+            MEDIUM_EMPHASIS:"99", //60%
+            DISABLED:       "61", //38%
         }
     },
 
@@ -84,15 +84,15 @@ export const THEME_COLORS = {
         SECONDARY_050: "#C8FFF4",
 
         ON_PRIMARY_OPACITY: {
-            HIGH_EMPHASIS: "100%",
-            MEDIUM_EMPHASIS: "74%",
-            DISABLED: "38%",
+            HIGH_EMPHASIS:  "FF", //100%
+            MEDIUM_EMPHASIS:"BD", //74%
+            DISABLED:       "61", //38%
         },
 
         ON_SURFACE_OPACITY: {
-            HIGH_EMPHASIS: "87%",
-            MEDIUM_EMPHASIS: "60%",
-            DISABLED: "38%",
+            HIGH_EMPHASIS:  "DE", //87%
+            MEDIUM_EMPHASIS:"99", //60%
+            DISABLED:       "61", //38%
         },
 
         OUTLINE_ON_SURFACE: {
