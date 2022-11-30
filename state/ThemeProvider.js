@@ -1,4 +1,6 @@
 import React, {useContext, useState} from "react";
+import * as NavigationBar from "expo-navigation-bar";
+import {THEME_COLORS} from "./ThemeColors";
 
 export const ThemeTypeContext = React.createContext(undefined, undefined);
 export const ThemeToggleContext = React.createContext(undefined, undefined);
@@ -16,6 +18,10 @@ export default function ThemeProvider({children}) {
 
     function toggleTheme() {
         setDarkTheme(prevDarkTheme => !prevDarkTheme)
+        NavigationBar.setBackgroundColorAsync(!darkTheme ?
+            THEME_COLORS.DARK_THEME.BACKGROUND :
+            THEME_COLORS.LIGHT_THEME.BACKGROUND
+        ).then()
     }
 
     return(
