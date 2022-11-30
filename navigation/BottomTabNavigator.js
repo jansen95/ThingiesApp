@@ -3,10 +3,14 @@ import CalendarScreen from "../screens/CalendarScreen";
 import MapScreen from "../screens/MapScreen";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import {THEME_COLORS} from "../state/ThemeColors";
+import {useThemeType} from "../state/ThemeProvider";
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
+    const darkTheme = useThemeType();
+
     return(
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -24,11 +28,20 @@ export default function BottomTabNavigator() {
                         iconName = focused ? 'map-marker' : 'map-marker-outline';
                     }
 
-                    // You can return any component that you like here!
-                    return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
+                    return <MaterialCommunityIcons name={iconName}
+                                                   size={size}
+                                                   color={
+                                                        focused ?
+                                                            (darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY) :
+                                                            (darkTheme ?
+                                                                THEME_COLORS.DARK_THEME.ON_BACKGROUND + THEME_COLORS.DARK_THEME.ON_SURFACE_OPACITY.DISABLED:
+                                                                THEME_COLORS.LIGHT_THEME.ON_BACKGROUND + THEME_COLORS.LIGHT_THEME.ON_SURFACE_OPACITY.DISABLED)
+                                                   } />;
                 },
-                tabBarActiveTintColor: 'tomato',
-                tabBarInactiveTintColor: 'gray',
+                tabBarActiveTintColor: THEME_COLORS.DARK_THEME.PRIMARY,
+                tabBarStyle: {
+                    backgroundColor: darkTheme ? THEME_COLORS.DARK_THEME.BACKGROUND : THEME_COLORS.LIGHT_THEME.BACKGROUND,
+                },
             })}
         >
             <Tab.Screen name="ToDo's" component={TodoScreen} />
