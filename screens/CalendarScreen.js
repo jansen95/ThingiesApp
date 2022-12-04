@@ -1,4 +1,4 @@
-import {View} from "react-native";
+import {Text, View} from "react-native";
 import {CalendarList} from "react-native-calendars/src/index";
 import {LocaleConfig} from "react-native-calendars";
 import {useTodoLists} from "../state/TodoListProvider";
@@ -27,7 +27,7 @@ LocaleConfig.locales['Ger'] = {
 LocaleConfig.defaultLocale = 'Ger';
 
 export default function CalendarScreen() {
-    const todoLists = useTodoLists();
+    const [todoLists, dispatchTodoLists, activeTodoList] = useTodoLists();
 
     let date;
     date = new Date().toString();
@@ -48,6 +48,7 @@ export default function CalendarScreen() {
 
     return (
         <View>
+                <Text>Active todo list is: {activeTodoList}</Text>
                 <CalendarList
                     markingType={'custom'}
                     markedDates={markedDay}

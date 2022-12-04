@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useReducer} from "react";
+import React, {createContext, useContext, useReducer, useState} from "react";
 
 const TodoListsContext = createContext(undefined, undefined)
 
@@ -11,7 +11,7 @@ function reducer(todos, action) {
 }
 
 export default function TodoListProvider({children}) {
-    const [todosLists, dispatch] = useReducer(reducer, [
+    const [todosLists, dispatchTodoLists] = useReducer(reducer, [
         {listId: 1, name: "List1", todos:[
                 {todoId: 2, name: "Todo1", LatLng: { latitude: 6.6141667 , longitude: 51.839444444444446 }, date: "2022-12-01"},
                 {todoId: 3, name: "Todo2", LatLng: { latitude: 6.6144444 , longitude: 51.839444444444446 }, date: "2022-12-02"},
@@ -24,8 +24,10 @@ export default function TodoListProvider({children}) {
             ]},
     ])
 
+    const [activeList, setActiveList] = useState(0)
+
     return(
-        <TodoListsContext.Provider value={todosLists}>
+        <TodoListsContext.Provider value={[todosLists, dispatchTodoLists, activeList, setActiveList]}>
             {children}
         </TodoListsContext.Provider>
     )

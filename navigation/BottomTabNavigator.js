@@ -14,7 +14,7 @@ export default function BottomTabNavigator() {
     return(
         <Tab.Navigator
             screenOptions={({ route }) => ({
-                showHeader: false,
+                headerShown: false,
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
 

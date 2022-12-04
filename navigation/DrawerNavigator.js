@@ -4,15 +4,18 @@ import BottomTabNavigator from "./BottomTabNavigator";
 import * as React from "react";
 import {createDrawerNavigator} from "@react-navigation/drawer";
 import {useThemeType} from "../state/ThemeProvider";
+import {useTodoLists} from "../state/TodoListProvider";
+import DrawerContent from "./DrawerContent";
 
 const Drawer = createDrawerNavigator();
 
 
 export default function DrawerNavigator() {
     const darkTheme = useThemeType();
+    const [todoLists] = useTodoLists();
 
     return(
-        <Drawer.Navigator initialRouteName="List1"
+        <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}
                           screenOptions={{
                               headerStyle: {
                                   backgroundColor: darkTheme ? THEME_COLORS.DARK_THEME.BACKGROUND : THEME_COLORS.LIGHT_THEME.BACKGROUND,
@@ -22,8 +25,9 @@ export default function DrawerNavigator() {
                               headerRight: () => (<ThemeToggleSwitch/>),
                           }}
         >
-            <Drawer.Screen name="List1" component={BottomTabNavigator} />
-            <Drawer.Screen name="List2" component={BottomTabNavigator} />
+            {todoLists.map((list) => {
+                return <Drawer.Screen key={list.name} name={list.name} component={BottomTabNavigator}/>
+            })}
         </Drawer.Navigator>
     )
 }
