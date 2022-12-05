@@ -4,12 +4,15 @@ import MapView, {Marker} from 'react-native-maps';
 import * as Location from 'expo-location';
 import {useTodoLists} from "../state/TodoListProvider";
 
+import {THEME_COLORS} from "../state/ThemeColors";
+import {useThemeType} from "../state/ThemeProvider";
+
 export default function MapScreen() {
     const [mapRegion, setMapRegion] = useState({
-          latitude: 6.6141667,
-          longitude: 51.839444444444446,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitude: 51.8397905,
+          longitude: 6.6532594,
+          latitudeDelta: 0.004,
+          longitudeDelta: 0.002,
     });
     const [todoLists, dispatchTodoLists, activeTodoList] = useTodoLists();
 
@@ -32,13 +35,14 @@ export default function MapScreen() {
         userLocation();
         },[]);//*/
 
+    const darkTheme = useThemeType();
     return(
                 <View style= {styles.container}>
-                    <Text>Active todo list is: {activeTodoList}</Text>
                     <MapView style= {styles.map}
                         region={mapRegion}
                     >
                         {todoLists.map(({name, todos}, listIndex) => {
+                          if(listIndex==activeTodoList){
                             return (
                                 <View key={listIndex}>
                                     {todos.map((todo, todoIndex) => {
@@ -48,11 +52,14 @@ export default function MapScreen() {
                                                coordinate={todo.LatLng}
                                                title={todo.name}
                                                description={name}
+                                               pinColor = {darkTheme ? "plum" : "orange"}
+
                                             />
                                         )
                                     })}
                                 </View>
                             )
+                          }
                         })}
 
                     </MapView>
