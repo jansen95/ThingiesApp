@@ -7,17 +7,19 @@ import CustomStatusBar from "./components/CustomStatusBar";
 import { useColorScheme } from 'react-native';
 import * as NavigationBar from "expo-navigation-bar";
 import {THEME_COLORS} from "./state/ThemeColors";
+import * as Device from 'expo-device';
 
 
 
 export default function App() {
     let colorScheme = useColorScheme(); //OS Theme
 
-    NavigationBar.setBackgroundColorAsync(colorScheme === 'dark' ?
-        THEME_COLORS.DARK_THEME.BACKGROUND :
-        THEME_COLORS.LIGHT_THEME.BACKGROUND
-    ).then()
-
+    if (Device.brand !== "Apple") {
+        NavigationBar.setBackgroundColorAsync(colorScheme === 'dark' ?
+            THEME_COLORS.DARK_THEME.BACKGROUND :
+            THEME_COLORS.LIGHT_THEME.BACKGROUND
+        ).then()
+    }
 
     return (
         <TodoListProvider>
