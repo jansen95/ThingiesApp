@@ -47,7 +47,7 @@ export default function CalendarScreen() {
 
     return (
         <View>
-                <Text>Active todo list is: {activeTodoList}</Text>
+                {/*<Text>Active todo list is: {activeTodoList}</Text>*/}
                 <CalendarList
                     markingType={'custom'}
                     markedDates={markedDay}
