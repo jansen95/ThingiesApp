@@ -36,7 +36,6 @@ export default function CalendarScreen() {
 
     todoLists.map(({todos}) => {
         todos.map((todo) => {
-            console.log(todo.date);
             markedDay[todo.date] = {
                 marked: true,
                 selected: true,
