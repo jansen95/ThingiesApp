@@ -10,36 +10,40 @@ export default function TodoScreen() {
     const darkTheme = useThemeType();
     const todoItems = [];
 
-    for (let i = 0; i < 3; i++) {
-        todoItems.push(
-            <List.Item
-                key={i}
-                style={{
-                    backgroundColor: darkTheme ? THEME_COLORS.DARK_THEME.SURFACE : THEME_COLORS.LIGHT_THEME.SURFACE
-                }}
-                title="Title"
-                titleStyle={{
-                    color: darkTheme ? THEME_COLORS.DARK_THEME.ON_SURFACE : THEME_COLORS.LIGHT_THEME.ON_SURFACE
-                }}
-                description="Date: 06.12.2022,  GPS: 6.614, 51.839"
-                descriptionStyle={{
-                    color: darkTheme ? THEME_COLORS.DARK_THEME.ON_SURFACE + THEME_COLORS.DARK_THEME.ON_SURFACE_OPACITY.MEDIUM_EMPHASIS
-                        : THEME_COLORS.LIGHT_THEME.ON_SURFACE + THEME_COLORS.LIGHT_THEME.ON_SURFACE_OPACITY.MEDIUM_EMPHASIS
-                }}
-                left={() => <Checkbox
-                    disabled={false}
-                    status="checked"
-                />}
-                right={props => <List.Icon {...props} icon="equal" />}
-            />
-        );
-    }
+
+    todoLists.map(({todos}, indexList) => {
+        if (indexList === activeTodoList) {
+            todos.map((todo, indexTodo) => {
+                todoItems.push(
+                    <List.Item
+                        key={indexTodo}
+                        style={{
+                            backgroundColor: darkTheme ? THEME_COLORS.DARK_THEME.SURFACE : THEME_COLORS.LIGHT_THEME.SURFACE
+                        }}
+                        title={todo.name}
+                        titleStyle={{
+                            color: darkTheme ? THEME_COLORS.DARK_THEME.ON_SURFACE : THEME_COLORS.LIGHT_THEME.ON_SURFACE
+                        }}
+                        description={"Date: " + todo.date +  "   GPS: 6.614, 51.839"}
+                        descriptionStyle={{
+                            color: darkTheme ? THEME_COLORS.DARK_THEME.ON_SURFACE + THEME_COLORS.DARK_THEME.ON_SURFACE_OPACITY.MEDIUM_EMPHASIS
+                                : THEME_COLORS.LIGHT_THEME.ON_SURFACE + THEME_COLORS.LIGHT_THEME.ON_SURFACE_OPACITY.MEDIUM_EMPHASIS
+                        }}
+                        left={() => <Checkbox
+                            disabled={false}
+                            status="checked"
+                        />}
+                        right={props => <List.Icon {...props} icon="equal" />}
+                    />
+                );
+            })
+        }
+    })
+
 
     return(
 
         <ScrollView style={{}}>
-            {/*<Text>ToDo Screen</Text>*/}
-            {/*<Text>Active ToDo List is {activeTodoList}</Text>*/}
 
             {todoItems}
 
