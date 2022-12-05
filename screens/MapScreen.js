@@ -52,7 +52,7 @@ export default function MapScreen() {
                                                coordinate={todo.LatLng}
                                                title={todo.name}
                                                description={name}
-                                               pinColor = {darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY}
+                                               pinColor = {darkTheme ? "plum" : "orange"}
 
                                             />
                                         )
