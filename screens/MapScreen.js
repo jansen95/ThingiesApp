@@ -38,7 +38,6 @@ export default function MapScreen() {
     const darkTheme = useThemeType();
     return(
                 <View style= {styles.container}>
-                    <Text>Active todo list is: {activeTodoList}</Text>
                     <MapView style= {styles.map}
                         region={mapRegion}
                     >
@@ -54,6 +53,7 @@ export default function MapScreen() {
                                                title={todo.name}
                                                description={name}
                                                pinColor = {darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY}
+
                                             />
                                         )
                                     })}
