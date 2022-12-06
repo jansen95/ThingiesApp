@@ -1,10 +1,9 @@
-import {Text, View, StyleSheet} from "react-native";
+import {View, StyleSheet} from "react-native";
 import React, {useState} from 'react';
 import MapView, {Marker} from 'react-native-maps';
 import * as Location from 'expo-location';
 import {useTodoLists} from "../state/TodoListProvider";
 
-import {THEME_COLORS} from "../state/ThemeColors";
 import {useThemeType} from "../state/ThemeProvider";
 
 export default function MapScreen() {
@@ -42,18 +41,17 @@ export default function MapScreen() {
                         region={mapRegion}
                     >
                         {todoLists.map(({name, todos}, listIndex) => {
-                          if(listIndex==activeTodoList){
+                          if(listIndex===activeTodoList){
                             return (
                                 <View key={listIndex}>
                                     {todos.map((todo, todoIndex) => {
                                         return (
-                                            <Marker key={todoIndex}
+                                            <Marker
                                                key={listIndex+todoIndex}
                                                coordinate={todo.LatLng}
                                                title={todo.name}
                                                description={name}
-                                               pinColor = {darkTheme ? "plum" : "orange"}
-
+                                               pinColor = {darkTheme ? "indigo" : "indigo"}
                                             />
                                         )
                                     })}
