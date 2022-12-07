@@ -6,6 +6,21 @@ import {useTodoLists} from "../state/TodoListProvider";
 
 import {useThemeType} from "../state/ThemeProvider";
 
+export const MARKER_COLORS = {
+    DARK_THEME: {
+        ACUTE: "red",
+        TODAY: "orange",
+        DEFAULT: "indigo",
+        FAR_OFF: "blue"
+    },
+    LIGHT_THEME: {
+        ACUTE: "red",
+        TODAY: "orange",
+        DEFAULT: "indigo",
+        FAR_OFF: "blue"
+    }
+}
+
 export default function MapScreen() {
     const [mapRegion, setMapRegion] = useState({
           latitude: 51.8397905,
