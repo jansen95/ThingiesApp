@@ -54,7 +54,7 @@ export default function MapScreen() {
                         region={mapRegion}
                     >
                         {todoLists.map(({name, todos}, listIndex) => {
-                          if(listIndex===activeTodoList){
+                          if(listIndex===activeTodoList||activeTodoList===0){
                             return (
                                 <View key={listIndex}>
                                     {todos.map((todo, todoIndex) => {
