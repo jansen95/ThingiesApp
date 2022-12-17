@@ -12,11 +12,11 @@ export default function TodoScreen() {
 
 
     todoLists.map(({todos}, indexList) => {
-        if (indexList === activeTodoList) {
+        if (indexList === activeTodoList||activeTodoList===0) {
             todos.map((todo, indexTodo) => {
                 todoItems.push(
                     <List.Item
-                        key={indexTodo}
+                        key={indexTodo+indexList*100}
                         style={{
                             backgroundColor: darkTheme ? THEME_COLORS.DARK_THEME.SURFACE : THEME_COLORS.LIGHT_THEME.SURFACE
                         }}
@@ -24,7 +24,7 @@ export default function TodoScreen() {
                         titleStyle={{
                             color: darkTheme ? THEME_COLORS.DARK_THEME.ON_SURFACE : THEME_COLORS.LIGHT_THEME.ON_SURFACE
                         }}
-                        description={"Date: " + todo.date +  "   GPS: 6.614, 51.839"}
+                        description={"Date: " + todo.timestamp.substring(0, 10) +  " \nGPS: "+ todo.LatLng.latitude +" , "+ todo.LatLng.longitude}
                         descriptionStyle={{
                             color: darkTheme ? THEME_COLORS.DARK_THEME.ON_SURFACE + THEME_COLORS.DARK_THEME.ON_SURFACE_OPACITY.MEDIUM_EMPHASIS
                                 : THEME_COLORS.LIGHT_THEME.ON_SURFACE + THEME_COLORS.LIGHT_THEME.ON_SURFACE_OPACITY.MEDIUM_EMPHASIS
