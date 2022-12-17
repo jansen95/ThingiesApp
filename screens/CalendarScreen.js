@@ -1,6 +1,5 @@
-import {Text, View} from "react-native";
-import {CalendarList} from "react-native-calendars/src/index";
-import {LocaleConfig} from "react-native-calendars";
+import {Dimensions, View} from "react-native";
+import {Agenda, LocaleConfig} from "react-native-calendars";
 import {useTodoLists} from "../state/TodoListProvider";
 
 
@@ -46,9 +45,9 @@ export default function CalendarScreen() {
 
 
     return (
-        <View>
+        <View style={{height: Dimensions.get('window').height}}>
                 {/*<Text>Active todo list is: {activeTodoList}</Text>*/}
-                <CalendarList
+                <Agenda
                     markingType={'custom'}
                     markedDates={markedDay}
 
