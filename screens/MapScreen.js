@@ -6,6 +6,21 @@ import {useTodoLists} from "../state/TodoListProvider";
 
 import {useThemeType} from "../state/ThemeProvider";
 
+export const MARKER_COLORS = {
+    DARK_THEME: {
+        ACUTE: "red",
+        TODAY: "orange",
+        DEFAULT: "indigo",
+        FAR_OFF: "blue"
+    },
+    LIGHT_THEME: {
+        ACUTE: "red",
+        TODAY: "orange",
+        DEFAULT: "indigo",
+        FAR_OFF: "blue"
+    }
+}
+
 export default function MapScreen() {
     const [mapRegion, setMapRegion] = useState({
           latitude: 51.8397905,
@@ -35,6 +50,17 @@ export default function MapScreen() {
         },[]);//*/
 
     const darkTheme = useThemeType();
+    const today = new Date();
+    today.setHours(0, 0, 0,0);
+    const farDate =new Date();;
+    if(farDate.getMonth() < 11){
+        farDate.setMonth(farDate.getMonth()+1);
+    }else{
+        farDate.setMonth(0);
+        farDate.setFullYear(farDate.getFullYear()+1);
+    }
+
+
     return(
                 <View style= {styles.container}>
                     <MapView style= {styles.map}
@@ -45,13 +71,17 @@ export default function MapScreen() {
                             return (
                                 <View key={listIndex}>
                                     {todos.map((todo, todoIndex) => {
+                        console.log(new Date(todo.timestamp).toISOString()+" - "+today.toISOString()+" = "+ (new Date(todo.timestamp).getTime() === today.getTime()))
                                         return (
                                             <Marker
                                                key={listIndex+todoIndex}
                                                coordinate={todo.LatLng}
                                                title={todo.name}
-                                               description={name}
-                                               pinColor = {darkTheme ? "indigo" : "indigo"}
+                                               description= {new Date(todo.timestamp).toISOString().substring(0, 10)}
+
+                                               pinColor = {(new Date(todo.timestamp).getTime() === today.getTime()) ? MARKER_COLORS.DARK_THEME.TODAY : (new Date(todo.timestamp) < today ? MARKER_COLORS.DARK_THEME.ACUTE : (new Date(todo.timestamp) > farDate ? MARKER_COLORS.DARK_THEME.FAR_OFF : MARKER_COLORS.DARK_THEME.DEFAULT))}
+                                               //pinColor = {darkTheme ? "indigo" : "indigo"}
+                                               opacity = {new Date(todo.timestamp) > farDate ? 0.4 : 1.0}
                                             />
                                         )
                                     })}
@@ -65,6 +95,11 @@ export default function MapScreen() {
 
     );
 }
+
+function compareDates() {
+
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
