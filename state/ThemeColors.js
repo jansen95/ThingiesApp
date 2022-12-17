@@ -100,3 +100,18 @@ export const THEME_COLORS = {
         }
     }
 }
+
+export const MARKER_COLORS = {
+    DARK_THEME: {
+        ACUTE: "red",
+        TODAY: "orange",
+        DEFAULT: "indigo",
+        FAR_OFF: "blue"
+    },
+    LIGHT_THEME: {
+        ACUTE: "red",
+        TODAY: "orange",
+        DEFAULT: "indigo",
+        FAR_OFF: "blue"
+    }
+}

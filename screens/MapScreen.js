@@ -5,21 +5,8 @@ import * as Location from 'expo-location';
 import {useTodoLists} from "../state/TodoListProvider";
 
 import {useThemeType} from "../state/ThemeProvider";
+import {MARKER_COLORS} from  "../state/ThemeColors";
 
-export const MARKER_COLORS = {
-    DARK_THEME: {
-        ACUTE: "red",
-        TODAY: "orange",
-        DEFAULT: "indigo",
-        FAR_OFF: "blue"
-    },
-    LIGHT_THEME: {
-        ACUTE: "red",
-        TODAY: "orange",
-        DEFAULT: "indigo",
-        FAR_OFF: "blue"
-    }
-}
 
 export default function MapScreen() {
     const [mapRegion, setMapRegion] = useState({
@@ -71,16 +58,13 @@ export default function MapScreen() {
                             return (
                                 <View key={listIndex}>
                                     {todos.map((todo, todoIndex) => {
-                        console.log(new Date(todo.timestamp).toISOString()+" - "+today.toISOString()+" = "+ (new Date(todo.timestamp).getTime() === today.getTime()))
                                         return (
                                             <Marker
                                                key={listIndex+todoIndex}
                                                coordinate={todo.LatLng}
                                                title={todo.name}
                                                description= {new Date(todo.timestamp).toISOString().substring(0, 10)}
-
                                                pinColor = {(new Date(todo.timestamp).getTime() === today.getTime()) ? MARKER_COLORS.DARK_THEME.TODAY : (new Date(todo.timestamp) < today ? MARKER_COLORS.DARK_THEME.ACUTE : (new Date(todo.timestamp) > farDate ? MARKER_COLORS.DARK_THEME.FAR_OFF : MARKER_COLORS.DARK_THEME.DEFAULT))}
-                                               //pinColor = {darkTheme ? "indigo" : "indigo"}
                                                opacity = {new Date(todo.timestamp) > farDate ? 0.4 : 1.0}
                                             />
                                         )
