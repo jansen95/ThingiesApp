@@ -79,8 +79,9 @@ export default function MapScreen() {
                                                title={todo.name}
                                                description= {new Date(todo.timestamp).toISOString().substring(0, 10)}
 
-                                                pinColor = {(new Date(todo.timestamp).getTime() === today.getTime()) ? MARKER_COLORS.DARK_THEME.TODAY : (new Date(todo.timestamp) < today ? MARKER_COLORS.DARK_THEME.ACUTE : (new Date(todo.timestamp) > farDate ? MARKER_COLORS.DARK_THEME.FAR_OFF : MARKER_COLORS.DARK_THEME.DEFAULT))}
+                                               pinColor = {(new Date(todo.timestamp).getTime() === today.getTime()) ? MARKER_COLORS.DARK_THEME.TODAY : (new Date(todo.timestamp) < today ? MARKER_COLORS.DARK_THEME.ACUTE : (new Date(todo.timestamp) > farDate ? MARKER_COLORS.DARK_THEME.FAR_OFF : MARKER_COLORS.DARK_THEME.DEFAULT))}
                                                //pinColor = {darkTheme ? "indigo" : "indigo"}
+                                               opacity = {new Date(todo.timestamp) > farDate ? 0.4 : 1.0}
                                             />
                                         )
                                     })}
