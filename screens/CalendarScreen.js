@@ -36,7 +36,7 @@ export default function CalendarScreen() {
     todoLists.map(({todos},listIndex) => {
         if(listIndex===activeTodoList||activeTodoList===0){
             todos.map((todo) => {
-                markedDay[todo.date] = {
+                markedDay[todo.timestamp.substring(0, 10)] = {
                     marked: true,
                     selected: true,
                     selectedColor: "purple",
