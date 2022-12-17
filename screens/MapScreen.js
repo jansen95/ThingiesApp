@@ -5,6 +5,7 @@ import * as Location from 'expo-location';
 import {useTodoLists} from "../state/TodoListProvider";
 
 import {useThemeType} from "../state/ThemeProvider";
+import {MARKER_COLORS} from  "../state/ThemeColors";
 
 
 export default function MapScreen() {
