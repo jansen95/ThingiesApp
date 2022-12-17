@@ -1,6 +1,7 @@
 import {Dimensions, View} from "react-native";
 import {Agenda, LocaleConfig} from "react-native-calendars";
 import {useTodoLists} from "../state/TodoListProvider";
+import {MARKER_COLORS} from  "../state/ThemeColors";
 
 
 LocaleConfig.locales['Ger'] = {
@@ -28,19 +29,50 @@ LocaleConfig.defaultLocale = 'Ger';
 export default function CalendarScreen() {
     const [todoLists, dispatchTodoLists, activeTodoList] = useTodoLists();
 
-    let date;
-    date = new Date().toISOString();
+    let today = new Date();
+    today.setHours(0, 0, 0,0);
+    const farDate =new Date();;
+    if(farDate.getMonth() < 11){
+        farDate.setMonth(farDate.getMonth()+1);
+    }else{
+        farDate.setMonth(0);
+        farDate.setFullYear(farDate.getFullYear()+1);
+    }
 
     let markedDay = {};
 
     todoLists.map(({todos},listIndex) => {
         if(listIndex===activeTodoList||activeTodoList===0){
             todos.map((todo) => {
-                markedDay[todo.timestamp.substring(0, 10)] = {
-                    marked: true,
-                    selected: true,
-                    selectedColor: "purple",
-                };
+                if(today >= new Date(todo.timestamp)){
+                    if(today >new Date(todo.timestamp)){
+                        markedDay[todo.timestamp.substring(0, 10)] = {
+                            marked: true,
+                            selected: true,
+                            selectedColor: MARKER_COLORS.DARK_THEME.ACUTE,
+                        };
+                    }else{
+                        markedDay[todo.timestamp.substring(0, 10)] = {
+                            marked: true,
+                            selected: true,
+                            selectedColor: MARKER_COLORS.DARK_THEME.TODAY,
+                        };
+                    }
+                }else{
+                    if(farDate <= new Date(todo.timestamp)){
+                        markedDay[todo.timestamp.substring(0, 10)] = {
+                            marked: true,
+                            selected: true,
+                            selectedColor: MARKER_COLORS.DARK_THEME.FAR_OFF,
+                        };
+                    }else{
+                        markedDay[todo.timestamp.substring(0, 10)] = {
+                            marked: true,
+                            selected: true,
+                            selectedColor: MARKER_COLORS.DARK_THEME.DEFAULT,
+                        };
+                    }
+                }
             })
         }
     })
@@ -60,7 +92,7 @@ export default function CalendarScreen() {
                     firstDay={0}
                     showWeekNumbers={true}
                     hideDayNames={false}
-                    minDate={date}
+                    minDate={today.toISOString()}
                 />
         </View>
     )
