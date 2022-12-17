@@ -29,18 +29,20 @@ export default function CalendarScreen() {
     const [todoLists, dispatchTodoLists, activeTodoList] = useTodoLists();
 
     let date;
-    date = new Date().toString();
+    date = new Date().toISOString();
 
     let markedDay = {};
 
-    todoLists.map(({todos}) => {
-        todos.map((todo) => {
-            markedDay[todo.date] = {
-                marked: true,
-                selected: true,
-                selectedColor: "purple",
-            };
-        })
+    todoLists.map(({todos},listIndex) => {
+        if(listIndex===activeTodoList||activeTodoList===0){
+            todos.map((todo) => {
+                markedDay[todo.date] = {
+                    marked: true,
+                    selected: true,
+                    selectedColor: "purple",
+                };
+            })
+        }
     })
 
 
