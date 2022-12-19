@@ -3,13 +3,16 @@ import * as React from "react";
 import {useTodoLists} from "../state/TodoListProvider";
 import {THEME_COLORS} from "../state/ThemeColors";
 import {useThemeType} from "../state/ThemeProvider";
-import {Checkbox, List} from 'react-native-paper';
+import {List} from 'react-native-paper';
+import Checkbox from 'expo-checkbox';
+
 
 export default function TodoScreen() {
     const [todoLists, dispatchTodoLists, activeTodoList, setActiveList] = useTodoLists();
     const darkTheme = useThemeType();
     const todoItems = [];
 
+    const [checked, setChecked] = React.useState({});
 
     todoLists.map(({todos}, indexList) => {
         if (indexList === activeTodoList||activeTodoList===0) {
@@ -30,8 +33,9 @@ export default function TodoScreen() {
                                 : THEME_COLORS.LIGHT_THEME.ON_SURFACE + THEME_COLORS.LIGHT_THEME.ON_SURFACE_OPACITY.MEDIUM_EMPHASIS
                         }}
                         left={() => <Checkbox
-                            disabled={false}
-                            status="checked"
+                            value={checked[todo.todoId]}
+                            color =  {darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY}
+                            onValueChange={(newValue) => { setChecked({...checked, [todo.todoId]: newValue}) }}             //???
                         />}
                         right={props => <List.Icon {...props} icon="equal" />}
                     />
