@@ -14,6 +14,7 @@ import * as Device from 'expo-device';
 export default function App() {
     let colorScheme = useColorScheme(); //OS Theme
 
+    //console.log(Device.deviceName)
     if (Device.brand !== "Apple") {
         NavigationBar.setBackgroundColorAsync(colorScheme === 'dark' ?
             THEME_COLORS.DARK_THEME.BACKGROUND :
