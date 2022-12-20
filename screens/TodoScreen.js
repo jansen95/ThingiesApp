@@ -19,7 +19,7 @@ export default function TodoScreen() {
             todos.map((todo, indexTodo) => {
                 todoItems.push(
                     <List.Item
-                        key={indexTodo+indexList*100}
+                        key={todo.todoId}
                         style={{
                             backgroundColor: darkTheme ? THEME_COLORS.DARK_THEME.SURFACE : THEME_COLORS.LIGHT_THEME.SURFACE
                         }}
