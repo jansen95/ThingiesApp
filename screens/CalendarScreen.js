@@ -1,6 +1,7 @@
-import {Dimensions, View} from "react-native";
+import {Dimensions, View, Text, TouchableOpacity, StyleSheet} from "react-native";
 import {Agenda, LocaleConfig} from "react-native-calendars";
 import {useTodoLists} from "../state/TodoListProvider";
+import {MARKER_COLORS} from  "../state/ThemeColors";
 
 
 LocaleConfig.locales['Ger'] = {
@@ -43,6 +44,16 @@ export default function CalendarScreen() {
         })
     })
 
+    const renderItem = (item) => {
+        return (
+            <TouchableOpacity style={styles.item}>
+                <View>
+                    <Text>{item.name}</Text>
+                </View>
+            </TouchableOpacity>
+        );
+    }
+
 
     return (
         <View style={{height: Dimensions.get('window').height}}>
@@ -51,6 +62,10 @@ export default function CalendarScreen() {
                     markingType={'custom'}
                     markedDates={markedDay}
 
+                    items={agendaItem}
+
+                    renderItem={renderItem}
+
                     pastScrollRange={0}
                     futureScrollRange={36}
                     showScrollIndicator={true}
@@ -58,11 +73,24 @@ export default function CalendarScreen() {
                     firstDay={0}
                     showWeekNumbers={true}
                     hideDayNames={false}
-                    minDate={date}
+                    minDate={today.toISOString()}
                 />
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    item: {
+        flex: 1,
+        borderRadius: 5,
+        padding: 10,
+        marginRight: 10,
+        marginTop: 17
+    }
+});
 
 
 
