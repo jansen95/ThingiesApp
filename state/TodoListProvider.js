@@ -77,23 +77,26 @@ export default function TodoListProvider({children}) {
     console.log("TODOS: ")
     console.log(todos)
     console.log()
-     */
+    //*/
+
 
     const getTodoLists = async () => {
         try {
-            const res = await axios.get('http://192.168.178.23:8080/lists')
-            dispatchLists({ type: ACTIONS.REPLACE_All, payload: {data: res.data}})
+            const res = await axios.get('http://192.168.178.51:3001/lists');
+            //console.log(res.data);
+            dispatchLists({ type: ACTIONS.REPLACE_All, payload: {data: res.data}});
         } catch (error) {
-            console.log(error.message)
+            console.error(error);
         }
     }
 
     const getTodos = async () => {
         try {
-            const res = await axios.get('http://192.168.178.23:8080/todos')
-            dispatchTodos({ type: ACTIONS.REPLACE_All, payload: {data: res.data}})
+            const res = await axios.get('http://192.168.178.51:3001/todos');
+            //console.log(res.data);
+            dispatchTodos({ type: ACTIONS.REPLACE_All, payload: {data: res.data}});
         } catch (error) {
-            console.log(error.message)
+            console.error(error);
         }
     }
 
