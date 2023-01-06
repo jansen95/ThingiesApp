@@ -8,6 +8,7 @@ import SignUpScreen from "../screens/SignUpScreen";
 import {useThemeType} from "../state/ThemeProvider";
 import {THEME_COLORS} from "../state/ThemeColors";
 import ThemeToggleSwitch from "../components/ThemeToggleSwitch";
+import axios from "axios";
 
 export default function LoginStackNavigator() {
     const [state, dispatch] = React.useReducer(
@@ -61,6 +62,7 @@ export default function LoginStackNavigator() {
         bootstrapAsync().then();
     }, []);
 
+
     const authContext = React.useMemo(
         () => ({
             signIn: async (data) => {
@@ -68,8 +70,21 @@ export default function LoginStackNavigator() {
                 // We will also need to handle errors if sign in failed
                 // After getting token, we need to persist the token using `SecureStore`
                 // In the example, we'll use a dummy token
+                const username = data.username
+                const password = data.password
 
-                dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+                await axios.post('http://192.168.178.189:3001/login',  {
+                    "email": username,
+                    "password": password
+                })
+                .then(res => {
+                    const accessToken = res.data.accessToken
+                    console.log(accessToken)
+                    dispatch({ type: 'SIGN_IN', token: accessToken });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             },
             signOut: () => dispatch({ type: 'SIGN_OUT' }),
             signUp: async (data) => {
