@@ -5,14 +5,35 @@ import {THEME_COLORS} from "../state/ThemeColors";
 import {useThemeType} from "../state/ThemeProvider";
 import {List} from 'react-native-paper';
 import Checkbox from 'expo-checkbox';
+import axios from "axios";
+import {useEffect, useState} from "react";
+import {useToken} from "../state/TokenContext";
 
 
 export default function TodoScreen() {
     const [todoLists, dispatchTodoLists, activeTodoList, setActiveList] = useTodoLists();
     const darkTheme = useThemeType();
     const todoItems = [];
+    const token = useToken();
 
     const [checked, setChecked] = React.useState({});
+    const [databaseTodoItems, setDatabaseTodoItems] = useState([])
+
+    useEffect(() => {
+        const getData = async () => {
+            await axios.get('http://192.168.178.189:3002/todos', {headers: { Authorization: `Bearer ${token}` }})
+                .then(function (response) {
+                    // handle success
+                    console.log(response.data);
+                    setDatabaseTodoItems(response.data)
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+        }
+        getData().then()
+    }, []);
 
     todoLists.map(({todos}, indexList) => {
         if (indexList === activeTodoList||activeTodoList===0) {

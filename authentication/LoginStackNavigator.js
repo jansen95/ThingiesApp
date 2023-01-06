@@ -10,6 +10,7 @@ import {THEME_COLORS} from "../state/ThemeColors";
 import ThemeToggleSwitch from "../components/ThemeToggleSwitch";
 import axios from "axios";
 import {Alert} from "react-native";
+import {TokenContext} from "../state/TokenContext";
 
 export default function LoginStackNavigator() {
     const [state, dispatch] = React.useReducer(
@@ -107,24 +108,26 @@ export default function LoginStackNavigator() {
 
     return (
         <AuthContext.Provider value={authContext}>
-            <Stack.Navigator
-                screenOptions={{
-                    headerStyle: {
-                        backgroundColor: darkTheme ? THEME_COLORS.DARK_THEME.BACKGROUND:THEME_COLORS.LIGHT_THEME.BACKGROUND,
-                    },
-                    headerTintColor: darkTheme ? THEME_COLORS.DARK_THEME.ON_BACKGROUND:THEME_COLORS.LIGHT_THEME.ON_BACKGROUND,
-                    headerRight: () => (<ThemeToggleSwitch/>),
-                }}
-            >
-                {state.userToken == null ? (
-                    <>
-                        <Stack.Screen name="SignIn" component={SignInScreen} />
-                        <Stack.Screen name="SignUp" component={SignUpScreen} />
-                    </>
+            <TokenContext.Provider value={state.userToken}>
+                <Stack.Navigator
+                    screenOptions={{
+                        headerStyle: {
+                            backgroundColor: darkTheme ? THEME_COLORS.DARK_THEME.BACKGROUND:THEME_COLORS.LIGHT_THEME.BACKGROUND,
+                        },
+                        headerTintColor: darkTheme ? THEME_COLORS.DARK_THEME.ON_BACKGROUND:THEME_COLORS.LIGHT_THEME.ON_BACKGROUND,
+                        headerRight: () => (<ThemeToggleSwitch/>),
+                    }}
+                >
+                    {state.userToken == null ? (
+                        <>
+                            <Stack.Screen name="SignIn" component={SignInScreen} />
+                            <Stack.Screen name="SignUp" component={SignUpScreen} />
+                        </>
                     ) : (
-                    <Stack.Screen options={{headerShown: false}} name="Main" component={MainScreen} />
-                )}
-            </Stack.Navigator>
+                        <Stack.Screen options={{headerShown: false}} name="Main" component={MainScreen} />
+                    )}
+                </Stack.Navigator>
+            </TokenContext.Provider>
         </AuthContext.Provider>
     );
 }
