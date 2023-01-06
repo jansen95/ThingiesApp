@@ -9,6 +9,7 @@ import {useThemeType} from "../state/ThemeProvider";
 import {THEME_COLORS} from "../state/ThemeColors";
 import ThemeToggleSwitch from "../components/ThemeToggleSwitch";
 import axios from "axios";
+import {Alert} from "react-native";
 
 export default function LoginStackNavigator() {
     const [state, dispatch] = React.useReducer(
@@ -80,10 +81,12 @@ export default function LoginStackNavigator() {
                 .then(res => {
                     const accessToken = res.data.accessToken
                     console.log(accessToken)
+                    SecureStore.setItemAsync('userToken', accessToken)
                     dispatch({ type: 'SIGN_IN', token: accessToken });
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    //console.log(error.response.data);
+                    Alert.alert(error.message +  ": " + error.response.data)
                 });
             },
             signOut: () => dispatch({ type: 'SIGN_OUT' }),
