@@ -11,6 +11,7 @@ import ThemeToggleSwitch from "../components/ThemeToggleSwitch";
 import axios from "axios";
 import {Alert} from "react-native";
 import {TokenContext} from "../state/TokenContext";
+import {AUTH_SERVER_ADDRESS} from "@env"
 
 export default function LoginStackNavigator() {
     const [state, dispatch] = React.useReducer(
@@ -75,7 +76,7 @@ export default function LoginStackNavigator() {
                 const username = data.username
                 const password = data.password
 
-                await axios.post('http://192.168.178.189:3001/login',  {
+                await axios.post(AUTH_SERVER_ADDRESS + '/login',  {
                     "email": username,
                     "password": password
                 })

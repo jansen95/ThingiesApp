@@ -8,6 +8,7 @@ import Checkbox from 'expo-checkbox';
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {useToken} from "../state/TokenContext";
+import {API_ADDRESS} from "@env"
 
 
 export default function TodoScreen() {
@@ -21,7 +22,7 @@ export default function TodoScreen() {
 
     useEffect(() => {
         const getData = async () => {
-            await axios.get('http://192.168.178.189:3002/todos', {headers: { Authorization: `Bearer ${token}` }})
+            await axios.get(API_ADDRESS + '/todos', {headers: { Authorization: `Bearer ${token}` }})
                 .then(function (response) {
                     // handle success
                     console.log(response.data);

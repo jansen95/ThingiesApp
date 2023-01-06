@@ -1,5 +1,7 @@
 import React, {createContext, useContext, useReducer, useState} from "react";
 import axios from "axios";
+import {API_ADDRESS} from "@env"
+
 
 const TodoListsContext = createContext(undefined, undefined)
 const DatabaseContext = createContext(undefined, undefined)
@@ -40,17 +42,17 @@ function todoReducer(todos, action) {
 export default function TodoListProvider({children}) {
     const [todoLists, dispatchTodoLists] = useReducer(reducer, [
         {listId: 0, name: "All Lists",todos:[]},
-        {listId: 1, name: "List1", todos:[
-                        {todoId: 2, name: "Todo1", LatLng: { latitude: 51.8397905 , longitude: 6.6532594 }, timestamp: "2022-12-17T00:00:00Z", isChecked: false},
-                        {todoId: 3, name: "Todo2", LatLng: { latitude: 51.8399905 , longitude: 6.6532594 }, timestamp: "2022-12-21T00:00:00Z", isChecked: false},
-                        {todoId: 4, name: "Todo3", LatLng: { latitude: 51.8395905 , longitude: 6.6532594 }, timestamp: "2022-12-22T00:00:00Z", isChecked: false},
+        {listId: 1, name: "LocalList1", todos:[
+                        {todoId: 2, name: "LocalTodo1", LatLng: { latitude: 51.8397905 , longitude: 6.6532594 }, timestamp: "2022-12-17T00:00:00Z", isChecked: false},
+                        {todoId: 3, name: "LocalTodo2", LatLng: { latitude: 51.8399905 , longitude: 6.6532594 }, timestamp: "2022-12-21T00:00:00Z", isChecked: false},
+                        {todoId: 4, name: "LocalTodo3", LatLng: { latitude: 51.8395905 , longitude: 6.6532594 }, timestamp: "2022-12-22T00:00:00Z", isChecked: false},
                     ]},
-                {listId: 5, name: "List2", todos:[
-                        {todoId: 6, name: "Todo4", LatLng: { latitude: 51.8397905 , longitude: 6.6536594 }, timestamp: "2022-12-23T00:00:00Z", isChecked: true},
-                        {todoId: 7, name: "Todo5", LatLng: { latitude: 51.8397905 , longitude: 6.6534594 }, timestamp: "2022-12-24T00:00:00Z", isChecked: true},
-                        {todoId: 8, name: "Todo6", LatLng: { latitude: 51.8397905 , longitude: 6.6538594 }, timestamp: "2022-12-25T00:00:00Z", isChecked: false},
-                        {todoId: 9, name: "Todo7", LatLng: { latitude: 51.8397905 , longitude: 6.6540594 }, timestamp: "2023-02-25T00:00:00Z", isChecked: false},
-                        {todoId: 10,name: "Todo8", LatLng: { latitude: 51.8397905 , longitude: 6.6530594 }, timestamp: "2022-02-25T00:00:00Z", isChecked: false},
+                {listId: 5, name: "LocalList2", todos:[
+                        {todoId: 6, name: "LocalTodo4", LatLng: { latitude: 51.8397905 , longitude: 6.6536594 }, timestamp: "2022-12-23T00:00:00Z", isChecked: true},
+                        {todoId: 7, name: "LocalTodo5", LatLng: { latitude: 51.8397905 , longitude: 6.6534594 }, timestamp: "2022-12-24T00:00:00Z", isChecked: true},
+                        {todoId: 8, name: "LocalTodo6", LatLng: { latitude: 51.8397905 , longitude: 6.6538594 }, timestamp: "2022-12-25T00:00:00Z", isChecked: false},
+                        {todoId: 9, name: "LocalTodo7", LatLng: { latitude: 51.8397905 , longitude: 6.6540594 }, timestamp: "2023-02-25T00:00:00Z", isChecked: false},
+                        {todoId: 10,name: "LocalTodo8", LatLng: { latitude: 51.8397905 , longitude: 6.6530594 }, timestamp: "2022-02-25T00:00:00Z", isChecked: false},
                     ]},
     ])
 
@@ -82,7 +84,7 @@ export default function TodoListProvider({children}) {
 
     const getTodoLists = async () => {
         try {
-            const res = await axios.get('http://192.168.178.51:3001/lists');
+            const res = await axios.get(API_ADDRESS + '/lists');
             //console.log(res.data);
             dispatchLists({ type: ACTIONS.REPLACE_All, payload: {data: res.data}});
         } catch (error) {
@@ -92,7 +94,7 @@ export default function TodoListProvider({children}) {
 
     const getTodos = async () => {
         try {
-            const res = await axios.get('http://192.168.178.51:3001/todos');
+            const res = await axios.get( API_ADDRESS + '/todos');
             //console.log(res.data);
             dispatchTodos({ type: ACTIONS.REPLACE_All, payload: {data: res.data}});
         } catch (error) {
