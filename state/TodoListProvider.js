@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useEffect, useReducer, useState} from "react";
+import React, {createContext, useContext, useReducer, useState} from "react";
 import axios from "axios";
 
 const TodoListsContext = createContext(undefined, undefined)
@@ -96,7 +96,7 @@ export default function TodoListProvider({children}) {
             console.log(error.message)
         }
     }
-
+    /*
     useEffect(() => {
         getTodoLists().then();
     }, []);
@@ -105,7 +105,7 @@ export default function TodoListProvider({children}) {
     useEffect(() => {
         getTodos().then();
     }, []);
-
+    */
 
 
     const [activeList, setActiveList] = useState(0)
