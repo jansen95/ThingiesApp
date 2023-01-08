@@ -3,7 +3,6 @@ module.exports = function(api) {
   return {
     presets: ['babel-preset-expo'],
     plugins: [
-        ["module:react-native-dotenv"],
         'react-native-reanimated/plugin',
         'react-native-paper/babel'
     ],

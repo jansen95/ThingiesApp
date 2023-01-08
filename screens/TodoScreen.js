@@ -8,17 +8,17 @@ import Checkbox from 'expo-checkbox';
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {useToken} from "../state/TokenContext";
-import {API_ADDRESS} from "@env"
-
+import {API_ADDRESS} from "../ENV";
 
 export default function TodoScreen() {
     const [todoLists, dispatchTodoLists, activeTodoList, setActiveList] = useTodoLists();
     const darkTheme = useThemeType();
     const todoItems = [];
-    const token = useToken();
 
     const [checked, setChecked] = React.useState({});
     const [databaseTodoItems, setDatabaseTodoItems] = useState([])
+    const token = useToken();
+
 
     useEffect(() => {
         const getData = async () => {
