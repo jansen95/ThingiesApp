@@ -19,13 +19,19 @@ export default function TodoScreen() {
     const [databaseTodoItems, setDatabaseTodoItems] = useState([])
     const token = useToken();
 
+    function printData(data) {
+        data.map((dataObject) => {
+            console.log(dataObject)
+        })
+    }
+
 
     useEffect(() => {
         const getData = async () => {
             await axios.get(API_ADDRESS + '/todos', {headers: { Authorization: `Bearer ${token}` }})
                 .then(function (response) {
                     // handle success
-                    console.log(response.data);
+                    printData(response.data)
                     setDatabaseTodoItems(response.data)
                 })
                 .catch(function (error) {
@@ -33,7 +39,7 @@ export default function TodoScreen() {
                     console.log(error);
                 })
         }
-        //getData().then()
+        getData().then()
     }, []);
 
     todoLists.map(({todos}, indexList) => {
