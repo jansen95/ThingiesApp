@@ -7,6 +7,10 @@ import {useTodoLists} from "../state/TodoListProvider";
 import DrawerContent from "./DrawerContent";
 import {Button} from "react-native";
 import {AuthContext} from "../state/AuthContext";
+import {useEffect, useState} from "react";
+import {useToken} from "../state/TokenContext";
+import axios from "axios";
+import {API_ADDRESS} from "../ENV";
 
 const Drawer = createDrawerNavigator();
 
@@ -14,7 +18,27 @@ const Drawer = createDrawerNavigator();
 export default function DrawerNavigator() {
     const { signOut } = React.useContext(AuthContext);
     const darkTheme = useThemeType();
-    const [todoLists] = useTodoLists();
+    //const [todoLists] = useTodoLists();
+
+    const [databaseLists, setDatabaseLists] = useState([{"title": "List"}]);
+    const token = useToken();
+
+
+    useEffect(() => {
+        const getLists = async () => {
+            await axios.get(API_ADDRESS + '/lists', {headers: { Authorization: `Bearer ${token}` }})
+                .then(function (response) {
+                    // handle success
+                    //console.log(response.data);
+                    setDatabaseLists(response.data)
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+        }
+        getLists().then()
+    }, []);
 
     return(
         <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}
@@ -32,8 +56,9 @@ export default function DrawerNavigator() {
                               ),
                           }}
         >
-            {todoLists.map((list) => {
-                return <Drawer.Screen key={list.name} name={list.name} component={BottomTabNavigator}/>
+            <Drawer.Screen key={"All List"} name={"All List"} component={BottomTabNavigator}/>
+            {databaseLists.map((list) => {
+                return <Drawer.Screen key={list.title} name={list.title} component={BottomTabNavigator}/>
             })}
         </Drawer.Navigator>
     )
