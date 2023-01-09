@@ -16,7 +16,9 @@ export default function TodoScreen() {
     const todoItems = [];
 
     const [checked, setChecked] = React.useState({});
-    const [databaseTodoItems, setDatabaseTodoItems] = useState([])
+    const [databaseTodoItems, setDatabaseTodoItems] = useState([
+        {checked: false, date: null, gps_lat: null, gps_long: null, id: 1, list_id: 1, title:"Initial Todo"},
+    ])
     const token = useToken();
 
     function printData(data) {
@@ -24,7 +26,6 @@ export default function TodoScreen() {
             console.log(dataObject)
         })
     }
-
 
     useEffect(() => {
         const getData = async () => {
@@ -42,6 +43,7 @@ export default function TodoScreen() {
         getData().then()
     }, []);
 
+    /*
     todoLists.map(({todos}, indexList) => {
         if (indexList === activeTodoList||activeTodoList===0) {
             todos.map((todo, indexTodo) => {
@@ -71,6 +73,7 @@ export default function TodoScreen() {
             })
         }
     })
+    */
 
 
     return(
