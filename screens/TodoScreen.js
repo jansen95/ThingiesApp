@@ -43,6 +43,34 @@ export default function TodoScreen() {
         getData().then()
     }, []);
 
+    databaseTodoItems.map((todo) => {
+        if (todo.list_id === activeTodoList || activeTodoList === 0) {
+            todoItems.push(
+                <List.Item
+                    key={todo.id}
+                    style={{
+                        backgroundColor: darkTheme ? THEME_COLORS.DARK_THEME.SURFACE : THEME_COLORS.LIGHT_THEME.SURFACE
+                    }}
+                    title={todo.title}
+                    titleStyle={{
+                        color: darkTheme ? THEME_COLORS.DARK_THEME.ON_SURFACE : THEME_COLORS.LIGHT_THEME.ON_SURFACE
+                    }}
+                    description={"Date: " + (todo.date && todo.date.substring(0, 10)) +  "  GPS: "+ todo.gps_lat +" , "+ todo.gps_long}
+                    descriptionStyle={{
+                        color: darkTheme ? THEME_COLORS.DARK_THEME.ON_SURFACE + THEME_COLORS.DARK_THEME.ON_SURFACE_OPACITY.MEDIUM_EMPHASIS
+                            : THEME_COLORS.LIGHT_THEME.ON_SURFACE + THEME_COLORS.LIGHT_THEME.ON_SURFACE_OPACITY.MEDIUM_EMPHASIS
+                    }}
+                    left={() => <Checkbox
+                        value={checked[todo.checked]}
+                        color =  {darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY}
+                        onValueChange={(newValue) => { setChecked({...checked, [todo.id]: newValue}) }}             //???
+                    />}
+                    right={props => <List.Icon {...props} icon="equal" />}
+                />
+            );
+        }
+    })
+
     /*
     todoLists.map(({todos}, indexList) => {
         if (indexList === activeTodoList||activeTodoList===0) {

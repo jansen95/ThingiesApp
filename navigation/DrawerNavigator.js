@@ -56,6 +56,7 @@ export default function DrawerNavigator() {
                               ),
                           }}
         >
+            <Drawer.Screen key={"All List"} name={"All List"} component={BottomTabNavigator}/>
             {databaseLists.map((list) => {
                 return <Drawer.Screen key={list.title} name={list.title} component={BottomTabNavigator}/>
             })}

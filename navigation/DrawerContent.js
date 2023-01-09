@@ -30,14 +30,25 @@ export default function DrawerContent(props) {
 
     return(
         <DrawerContentScrollView {...props}>
+            <DrawerItem key={"All List"}
+                               label={"All List"}
+                               activeBackgroundColor={THEME_COLORS.LIGHT_THEME.PRIMARY}
+                               activeTintColor={THEME_COLORS.LIGHT_THEME.ON_PRIMARY}
+                               focused={activeList === 0}
+                               onPress={() => {
+                                   setActiveList(0);
+                                   props.navigation.navigate("All List");
+                               }}
+                               active={true}
+            />
             {databaseLists.map((list, listIndex) => {
                 return <DrawerItem key={list.title}
                                    label={list.title}
                                    activeBackgroundColor={THEME_COLORS.LIGHT_THEME.PRIMARY}
                                    activeTintColor={THEME_COLORS.LIGHT_THEME.ON_PRIMARY}
-                                   focused={listIndex === activeList}
+                                   focused={list.id === activeList}
                                    onPress={() => {
-                                       setActiveList(listIndex);
+                                       setActiveList(list.id);
                                        props.navigation.navigate(list.title);
                                    }}
                                    active={true}
