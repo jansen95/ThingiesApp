@@ -33,7 +33,7 @@ export default function TodoScreen() {
                     console.log(error);
                 })
         }
-        getData().then()
+        //getData().then()
     }, []);
 
     todoLists.map(({todos}, indexList) => {
