@@ -1,7 +1,12 @@
-import {Dimensions, View} from "react-native";
+import {Dimensions, View, Text, TouchableOpacity} from "react-native";
+import {useEffect, useState} from "react";
 import {Agenda, LocaleConfig} from "react-native-calendars";
 import {useTodoLists} from "../state/TodoListProvider";
 import {MARKER_COLORS} from  "../state/ThemeColors";
+import * as React from "react";
+import axios from "axios";
+import {API_ADDRESS} from "../ENV";
+import {useToken} from "../state/TokenContext";
 
 
 LocaleConfig.locales['Ger'] = {
@@ -28,6 +33,11 @@ LocaleConfig.defaultLocale = 'Ger';
 
 export default function CalendarScreen() {
     const [todoLists, dispatchTodoLists, activeTodoList] = useTodoLists();
+
+    const [databaseTodoItems, setDatabaseTodoItems] = useState([
+        //{checked: false, date: "00-00-0000", gps_lat: null, gps_long: null, id: 1, list_id: 1, title: "Initial Todo"},
+    ])
+    const token = useToken();
 
     let today = new Date();
     today.setHours(0, 0, 0,0);
@@ -76,6 +86,7 @@ export default function CalendarScreen() {
             })
         }
     })
+    */
 
 
     return (
@@ -85,6 +96,9 @@ export default function CalendarScreen() {
                     markingType={'custom'}
                     markedDates={markedDay}
 
+                    items={agendaItem}
+                    renderItem={renderItem}
+
                     pastScrollRange={0}
                     futureScrollRange={36}
                     showScrollIndicator={true}
@@ -93,6 +107,12 @@ export default function CalendarScreen() {
                     showWeekNumbers={true}
                     hideDayNames={false}
                     minDate={today.toISOString()}
+
+                    renderEmptyData={() => {
+                        return <View>
+                            <Text></Text>
+                        </View>
+                    }}
                 />
         </View>
     )
