@@ -6,6 +6,9 @@ import {useTodoLists} from "../state/TodoListProvider";
 
 import {useThemeType} from "../state/ThemeProvider";
 import {MARKER_COLORS} from  "../state/ThemeColors";
+import {useToken} from "../state/TokenContext";
+import axios from "axios";
+import {API_ADDRESS} from "../ENV";
 
 
 export default function MapScreen() {
@@ -19,7 +22,14 @@ export default function MapScreen() {
         latitude: 0.0,
         longitude: 0.0,
     });
-    const [todoLists, dispatchTodoLists, activeTodoList] = useTodoLists();
+    //const [todoLists, dispatchTodoLists, activeTodoList] = useTodoLists();
+    const [databaseTodoItems, setDatabaseTodoItems] = useState([
+        {checked: false, date: null, gps_lat: 0.0, gps_long: 0.0, id: 1, list_id: 1, title:"Initial Todo"},
+    ])
+    const token = useToken();
+
+
+
 
 
     const userLocation = async() =>{
@@ -29,18 +39,31 @@ export default function MapScreen() {
         }
         let location = await Location.getCurrentPositionAsync({enableHighAccuracy:true});
         setCurrentUserLocation({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            latitudeDelta: 0.004,
+            longitudeDelta: 0.002,
         });
     }
     useEffect( ()=>{
+        const getData = async () => {
+            await axios.get(API_ADDRESS + '/todos', {headers: { Authorization: `Bearer ${token}` }})
+                .then(function (response) {
+                    setDatabaseTodoItems(response.data)
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+        }
+        getData().then()
         userLocation();
         },[]);
 
-    const darkTheme = useThemeType();
+    //const darkTheme = useThemeType();
     const today = new Date();
     today.setHours(0, 0, 0,0);
-    const farDate =new Date();;
+    const farDate =new Date();
     if(farDate.getMonth() < 11){
         farDate.setMonth(farDate.getMonth()+1);
     }else{
@@ -54,25 +77,19 @@ export default function MapScreen() {
                     <MapView style= {styles.map}
                         region={mapRegion}
                     >
-                        {todoLists.map(({name, todos}, listIndex) => {
-                          if(listIndex===activeTodoList||activeTodoList===0){
-                            return (
-                                <View key={listIndex}>
-                                    {todos.map((todo, todoIndex) => {
-                                        return (
-                                            <Marker
-                                               key={listIndex+todoIndex}
-                                               coordinate={todo.LatLng}
-                                               title={todo.name}
-                                               description= {new Date(todo.timestamp).toISOString().substring(0, 10)}
-                                               pinColor = {(new Date(todo.timestamp).getTime() === today.getTime()) ? MARKER_COLORS.DARK_THEME.TODAY : (new Date(todo.timestamp) < today ? MARKER_COLORS.DARK_THEME.ACUTE : (new Date(todo.timestamp) > farDate ? MARKER_COLORS.DARK_THEME.FAR_OFF : MARKER_COLORS.DARK_THEME.DEFAULT))}
-                                               opacity = {new Date(todo.timestamp) > farDate ? 0.4 : 1.0}
-                                            />
-                                        )
-                                    })}
-                                </View>
-                            )
-                          }
+                        {databaseTodoItems.map((todo) => {
+                            if ((todo.list_id === activeTodoList || activeTodoList === 0)&&!false) {
+                                return (
+                                    <Marker
+                                        key = {todo.id}
+                                        coordinate={{ latitude : todo.gps_lat , longitude : todo.gps_long }}
+                                        title={todo.title}
+                                        description= {new Date(todo.date).toISOString().substring(0, 10)}
+                                        pinColor = {(new Date(todo.date).getTime() === today.getTime()) ? MARKER_COLORS.DARK_THEME.TODAY : (new Date(todo.date) < today ? MARKER_COLORS.DARK_THEME.ACUTE : (new Date(todo.date) > farDate ? MARKER_COLORS.DARK_THEME.FAR_OFF : MARKER_COLORS.DARK_THEME.DEFAULT))}
+                                        opacity = {new Date(todo.date) > farDate ? 0.4 : 1.0}
+                                    />
+                                )
+                            }
                         })}
                         <Marker
                             coordinate={currentUserLocation}
@@ -86,9 +103,6 @@ export default function MapScreen() {
     );
 }
 
-function compareDates() {
-
-}
 
 const styles = StyleSheet.create({
   container: {

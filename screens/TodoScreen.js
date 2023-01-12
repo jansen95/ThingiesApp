@@ -47,7 +47,7 @@ export default function TodoScreen() {
         if (todo.list_id === activeTodoList || activeTodoList === 0) {
             todoItems.push(
                 <List.Item
-                    key={todo.id}
+                        key={todo.id}
                     style={{
                         backgroundColor: darkTheme ? THEME_COLORS.DARK_THEME.SURFACE : THEME_COLORS.LIGHT_THEME.SURFACE
                     }}
