@@ -1,5 +1,5 @@
 import {View, StyleSheet} from "react-native";
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import MapView, {Marker} from 'react-native-maps';
 import * as Location from 'expo-location';
 import {useTodoLists} from "../state/TodoListProvider";
@@ -10,10 +10,14 @@ import {MARKER_COLORS} from  "../state/ThemeColors";
 
 export default function MapScreen() {
     const [mapRegion, setMapRegion] = useState({
-          latitude: 51.8397905,
-          longitude: 6.6532594,
-          latitudeDelta: 0.004,
-          longitudeDelta: 0.002,
+        latitude: 51.8397905,
+        longitude: 6.6532594,
+        latitudeDelta: 0.004,
+        longitudeDelta: 0.002,
+    });
+    const [currentUserLocation, setCurrentUserLocation] = useState({
+        latitude: 0.0,
+        longitude: 0.0,
     });
     const [todoLists, dispatchTodoLists, activeTodoList] = useTodoLists();
 
@@ -24,17 +28,14 @@ export default function MapScreen() {
             setErrorMsg('Permission to access location was denied')
         }
         let location = await Location.getCurrentPositionAsync({enableHighAccuracy:true});
-        setMapRegion({
+        setCurrentUserLocation({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
         });
-        console.log(location.coords.latitude, location.coords.longitude);
     }
-    /*useEffect(()=>{
+    useEffect( ()=>{
         userLocation();
-        },[]);//*/
+        },[]);
 
     const darkTheme = useThemeType();
     const today = new Date();
@@ -73,7 +74,12 @@ export default function MapScreen() {
                             )
                           }
                         })}
-
+                        <Marker
+                            coordinate={currentUserLocation}
+                            title={"Current Location"}
+                            description = {"hier bist du"}
+                            pinColor = {MARKER_COLORS.DARK_THEME.LOCATION}
+                        />
                     </MapView>
                 </View>
 
