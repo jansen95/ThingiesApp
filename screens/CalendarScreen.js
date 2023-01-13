@@ -1,9 +1,11 @@
-import {Dimensions, View, Text} from "react-native";
-import {useState} from "react";
+import {Dimensions, View, Text, TouchableOpacity} from "react-native";
+import {useEffect, useState} from "react";
 import {Agenda, LocaleConfig} from "react-native-calendars";
 import {useTodoLists} from "../state/TodoListProvider";
 import {MARKER_COLORS} from  "../state/ThemeColors";
 import * as React from "react";
+import axios from "axios";
+import {API_ADDRESS} from "../ENV";
 import {useToken} from "../state/TokenContext";
 
 
@@ -37,6 +39,28 @@ export default function CalendarScreen() {
     ])
     const token = useToken();
 
+    function printData(data) {
+        data.map((dataObject) => {
+            console.log(dataObject)
+        })
+    }
+
+    useEffect(() => {
+        const getData = async () => {
+            await axios.get(API_ADDRESS + '/todos', {headers: { Authorization: `Bearer ${token}` }})
+                .then(function (response) {
+                    // handle success
+                    //printData(response.data)
+                    setDatabaseTodoItems(response.data)
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+        }
+        getData().then()
+    }, []);
+
     let today = new Date();
     today.setHours(0, 0, 0,0);
     const farDate =new Date();
@@ -48,42 +72,56 @@ export default function CalendarScreen() {
     }
 
     let markedDay = {};
+    let agendaItem = {};
 
-    todoLists.map(({todos},listIndex) => {
-        if(listIndex===activeTodoList||activeTodoList===0){
-            todos.map((todo) => {
-                if(today >= new Date(todo.timestamp)){
-                    if(today >new Date(todo.timestamp)){
-                        markedDay[todo.timestamp.substring(0, 10)] = {
-                            marked: true,
-                            selected: true,
-                            selectedColor: MARKER_COLORS.DARK_THEME.ACUTE,
-                        };
-                    }else{
-                        markedDay[todo.timestamp.substring(0, 10)] = {
-                            marked: true,
-                            selected: true,
-                            selectedColor: MARKER_COLORS.DARK_THEME.TODAY,
-                        };
-                    }
+    databaseTodoItems.map((todo) => {
+        if(todo.list_id === activeTodoList || activeTodoList === 0){
+
+            agendaItem[todo.date.substring(0, 10)]= [{
+                    name: todo.title
+                }]
+
+            if(today >= new Date(todo.date)){
+                if(today >new Date(todo.date)){
+                    markedDay[todo.date.substring(0, 10)] = {
+                        marked: true,
+                        selected: true,
+                        selectedColor: MARKER_COLORS.DARK_THEME.ACUTE,
+                    };
                 }else{
-                    if(farDate <= new Date(todo.timestamp)){
-                        markedDay[todo.timestamp.substring(0, 10)] = {
-                            marked: true,
-                            selected: true,
-                            selectedColor: MARKER_COLORS.DARK_THEME.FAR_OFF,
-                        };
-                    }else{
-                        markedDay[todo.timestamp.substring(0, 10)] = {
-                            marked: true,
-                            selected: true,
-                            selectedColor: MARKER_COLORS.DARK_THEME.DEFAULT,
-                        };
-                    }
+                    markedDay[todo.date.substring(0, 10)] = {
+                        marked: true,
+                        selected: true,
+                        selectedColor: MARKER_COLORS.DARK_THEME.TODAY,
+                    };
                 }
-            })
+            }else{
+                if(farDate <= new Date(todo.date)){
+                    markedDay[todo.date.substring(0, 10)] = {
+                        marked: true,
+                        selected: true,
+                        selectedColor: MARKER_COLORS.DARK_THEME.FAR_OFF,
+                    };
+                }else{
+                    markedDay[todo.date.substring(0, 10)] = {
+                        marked: true,
+                        selected: true,
+                        selectedColor: MARKER_COLORS.DARK_THEME.DEFAULT,
+                    };
+                }
+            }
         }
     })
+
+    const renderItem = (item) => {
+        return (
+            <TouchableOpacity>
+                <View>
+                    <Text>{item.name}</Text>
+                </View>
+            </TouchableOpacity>
+        );
+    }
 
 
     return (
@@ -93,8 +131,8 @@ export default function CalendarScreen() {
                     markingType={'custom'}
                     markedDates={markedDay}
 
-                    //items={agendaItem}
-                    //renderItem={renderItem}
+                    items={agendaItem}
+                    renderItem={renderItem}
 
                     pastScrollRange={0}
                     futureScrollRange={36}
