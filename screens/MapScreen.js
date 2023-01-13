@@ -4,7 +4,7 @@ import MapView, {Marker} from 'react-native-maps';
 import * as Location from 'expo-location';
 import {useTodoLists} from "../state/TodoListProvider";
 
-import {useThemeType} from "../state/ThemeProvider";
+//import {useThemeType} from "../state/ThemeProvider";
 import {MARKER_COLORS} from  "../state/ThemeColors";
 import {useToken} from "../state/TokenContext";
 import axios from "axios";
@@ -22,7 +22,7 @@ export default function MapScreen() {
         latitude: 0.0,
         longitude: 0.0,
     });
-    //const [todoLists, dispatchTodoLists, activeTodoList] = useTodoLists();
+    const [todoLists, dispatchTodoLists, activeTodoList] = useTodoLists();
     const [databaseTodoItems, setDatabaseTodoItems] = useState([
         {checked: false, date: null, gps_lat: 0.0, gps_long: 0.0, id: 1, list_id: 1, title:"Initial Todo"},
     ])
@@ -78,7 +78,7 @@ export default function MapScreen() {
                         region={mapRegion}
                     >
                         {databaseTodoItems.map((todo) => {
-                            if ((todo.list_id === activeTodoList || activeTodoList === 0)&&!false) {
+                            if ((todo.list_id === activeTodoList || activeTodoList === 0)&&!todo.checked) {
                                 return (
                                     <Marker
                                         key = {todo.id}

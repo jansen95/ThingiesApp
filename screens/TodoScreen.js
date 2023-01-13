@@ -3,7 +3,7 @@ import * as React from "react";
 import {useTodoLists} from "../state/TodoListProvider";
 import {THEME_COLORS} from "../state/ThemeColors";
 import {useThemeType} from "../state/ThemeProvider";
-import {FAB,Checkbox,List} from 'react-native-paper';
+import {Checkbox,List} from 'react-native-paper';
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {useToken} from "../state/TokenContext";
@@ -29,9 +29,9 @@ export default function TodoScreen() {
     }
 
     const setChecked= async (id) =>{
-        await axios.patch(API_ADDRESS+ '/todo/setChecked/:id' ,{},{headers: { Authorization: `Bearer ${token}`} })
+        await axios.patch(API_ADDRESS+ '/todo/setChecked/'+id ,{},{headers: { Authorization: `Bearer ${token}`} })
             .then(function (response) {
-                this.getData();
+                getData();
             })
             .catch(function (error) {
                 console.log(error);
@@ -42,13 +42,23 @@ export default function TodoScreen() {
             {title: new_title, gps_lat: new_gps_lat, gps_long: new_gps_long, date: new_date},
             {headers: { Authorization: `Bearer ${token}`} })
             .then(function (response) {
+                getData();
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }
+    const createTodo= async (new_title, new_gps_lat, new_gps_long, new_date, activeList) =>{
+        await axios.post(API_ADDRESS+ '/todo' ,
+            {title: new_title, gps_lat: new_gps_lat, gps_long: new_gps_long, date: new_date, list_id: activeList},
+            {headers: { Authorization: `Bearer ${token}`} })
+            .then(function (response) {
                 this.getData();
             })
             .catch(function (error) {
                 console.log(error);
             })
     }
-
     const getData = async () => {
         await axios.get(API_ADDRESS + '/todos', {headers: { Authorization: `Bearer ${token}` }})
             .then(function (response) {
@@ -67,6 +77,7 @@ export default function TodoScreen() {
 
     const onAddButtonPress=()=>{
         console.log("Add pressed")
+        //createTodo("New task",0.0,0.0,null,activeTodoList);
 
     }
 
@@ -140,9 +151,6 @@ export default function TodoScreen() {
                 {todoItems}
 
             </ScrollView>
-            {/*<FAB style={styles.fab} icon="plus-circle"
-                 color={(darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY)}
-                 onPress={onAddButtonPress} />*/}
 
             <TouchableOpacity
                 style={styles.floatingButton}
