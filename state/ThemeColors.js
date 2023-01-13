@@ -106,12 +106,14 @@ export const MARKER_COLORS = {
         ACUTE: "red",
         TODAY: "orange",
         DEFAULT: "indigo",
-        FAR_OFF: "blue"
+        FAR_OFF: "blue",
+        LOCATION: "green"
     },
     LIGHT_THEME: {
         ACUTE: "red",
         TODAY: "orange",
         DEFAULT: "indigo",
-        FAR_OFF: "blue"
+        FAR_OFF: "blue",
+        LOCATION: "green"
     }
 }
