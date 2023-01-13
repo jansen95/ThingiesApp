@@ -1,11 +1,9 @@
-import {Dimensions, View, Text, TouchableOpacity} from "react-native";
-import {useEffect, useState} from "react";
+import {Dimensions, View, Text} from "react-native";
+import {useState} from "react";
 import {Agenda, LocaleConfig} from "react-native-calendars";
 import {useTodoLists} from "../state/TodoListProvider";
 import {MARKER_COLORS} from  "../state/ThemeColors";
 import * as React from "react";
-import axios from "axios";
-import {API_ADDRESS} from "../ENV";
 import {useToken} from "../state/TokenContext";
 
 
@@ -41,7 +39,7 @@ export default function CalendarScreen() {
 
     let today = new Date();
     today.setHours(0, 0, 0,0);
-    const farDate =new Date();;
+    const farDate =new Date();
     if(farDate.getMonth() < 11){
         farDate.setMonth(farDate.getMonth()+1);
     }else{
@@ -86,7 +84,6 @@ export default function CalendarScreen() {
             })
         }
     })
-    */
 
 
     return (
@@ -96,8 +93,8 @@ export default function CalendarScreen() {
                     markingType={'custom'}
                     markedDates={markedDay}
 
-                    items={agendaItem}
-                    renderItem={renderItem}
+                    //items={agendaItem}
+                    //renderItem={renderItem}
 
                     pastScrollRange={0}
                     futureScrollRange={36}
@@ -109,9 +106,11 @@ export default function CalendarScreen() {
                     minDate={today.toISOString()}
 
                     renderEmptyData={() => {
-                        return <View>
-                            <Text></Text>
-                        </View>
+                        return (
+                                <View>
+                                    <Text></Text>
+                                </View>
+                            )
                     }}
                 />
         </View>
