@@ -1,9 +1,9 @@
-import {View,ScrollView, StyleSheet, TouchableOpacity} from "react-native";
+import {View, ScrollView, StyleSheet, TouchableOpacity, Button} from "react-native";
 import * as React from "react";
 import {useTodoLists} from "../state/TodoListProvider";
 import {THEME_COLORS} from "../state/ThemeColors";
 import {useThemeType} from "../state/ThemeProvider";
-import {Modal, Portal, Text, Checkbox, List, Provider} from 'react-native-paper';
+import {Modal, Portal, Text, Checkbox, List, Provider, TextInput} from 'react-native-paper';
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {useToken} from "../state/TokenContext";
@@ -146,9 +146,12 @@ export default function TodoScreen() {
     const onAddButtonPress=()=>{
         showModal();
         console.log("Add pressed ");
-        //createTodo("New task",0.0,0.0,null,activeTodoList);
-
+        //let id = createTodo("New task",0.0,0.0,null,activeTodoList);
     }
+    const [name, setName] = React.useState('');
+    const [gpsLat, setGpsLat] = React.useState('');
+    const [gpsLong, setGpsLong] = React.useState('');
+    const [todoDate, setTodoDate] = React.useState('');
 
     return(
         <Provider>
@@ -170,8 +173,39 @@ export default function TodoScreen() {
                     />
                 </TouchableOpacity>
                 <Portal>
-                    <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContainer}>
-                        <Text>Example Modal.  Click outside this area to dismiss.</Text>
+                    <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContainer}
+                           backgroundColor = {darkTheme ?
+                               THEME_COLORS.DARK_THEME.SURFACE + THEME_COLORS.DARK_THEME.ON_SURFACE_OPACITY.HIGH_EMPHASIS :
+                               THEME_COLORS.LIGHT_THEME.SURFACE + THEME_COLORS.LIGHT_THEME.ON_SURFACE_OPACITY.MEDIUM_EMPHASIS}
+                    >
+                        <TextInput
+                            style={styles.textInput}
+                            label="ToDo Name: "
+                            onChangeText={setName}
+                        />
+                        <TextInput
+                            style={styles.textInput}
+                            label="GPS Latitude: "
+                            onChangeText={setGpsLat}
+                        />
+                        <TextInput
+                            style={styles.textInput}
+                            label="GPS Longitude: "
+                            onChangeText={setGpsLong}
+                        />
+                        <TextInput
+                            style={styles.textInput}
+                            label="Datum: "
+                            onChangeText={setTodoDate}
+                        />
+                        <Button
+                            style={styles.buttonInput}
+
+                            title="Speichern"
+                            onPress={hideModal}
+                            color={darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY}
+                        />
+
                     </Modal>
                 </Portal>
             </View>
@@ -193,8 +227,12 @@ const styles = StyleSheet.create({
         bottom:30,
     },
     modalContainer:{
-        backgroundColor: 'white',
-        padding: 40
+        paddingLeft:'10%',
+        paddingRight:'8%'
+    },
+    textInput: {
+    },
+    buttonInput: {
     },
 });
 
