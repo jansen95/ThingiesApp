@@ -3,7 +3,7 @@ import * as React from "react";
 import {useTodoLists} from "../state/TodoListProvider";
 import {THEME_COLORS} from "../state/ThemeColors";
 import {useThemeType} from "../state/ThemeProvider";
-import {Checkbox,List} from 'react-native-paper';
+import {Modal, Portal, Text, Checkbox, List, Provider} from 'react-native-paper';
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {useToken} from "../state/TokenContext";
@@ -75,11 +75,7 @@ export default function TodoScreen() {
         getData().then()
     }, []);
 
-    const onAddButtonPress=()=>{
-        console.log("Add pressed")
-        //createTodo("New task",0.0,0.0,null,activeTodoList);
 
-    }
 
     databaseTodoItems.map((todo) => {
         if (todo.list_id === activeTodoList || activeTodoList === 0) {
@@ -142,28 +138,44 @@ export default function TodoScreen() {
         }
     })
     */
+    const [visible, setVisible] = React.useState(false);
 
+    const showModal = () => setVisible(true);
+    const hideModal = () => setVisible(false);
+
+    const onAddButtonPress=()=>{
+        showModal();
+        console.log("Add pressed ");
+        //createTodo("New task",0.0,0.0,null,activeTodoList);
+
+    }
 
     return(
-        <View>
-            <ScrollView style={{}}>
+        <Provider>
+            <View>
+                <ScrollView style={{}}>
 
-                {todoItems}
+                    {todoItems}
 
-            </ScrollView>
+                </ScrollView>
 
-            <TouchableOpacity
-                style={styles.floatingButton}
-                onPress={onAddButtonPress}
-            >
-
-                <MaterialCommunityIcons
-                    name="plus-circle"
-                    size={50}
-                    color={(darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY)}
-                />
-            </TouchableOpacity>
-        </View>
+                <TouchableOpacity
+                    style={styles.floatingButton}
+                    onPress={onAddButtonPress}
+                >
+                    <MaterialCommunityIcons
+                        name="plus-circle"
+                        size={50}
+                        color={(darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY)}
+                    />
+                </TouchableOpacity>
+                <Portal>
+                    <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContainer}>
+                        <Text>Example Modal.  Click outside this area to dismiss.</Text>
+                    </Modal>
+                </Portal>
+            </View>
+        </Provider>
     )
 }
 
@@ -180,11 +192,9 @@ const styles = StyleSheet.create({
         right: 30,
         bottom:30,
     },
-    fab: {
-        position: 'absolute',
-        margin: 16,
-        right: 0,
-        bottom: 0,
+    modalContainer:{
+        backgroundColor: 'white',
+        padding: 40
     },
 });
 
