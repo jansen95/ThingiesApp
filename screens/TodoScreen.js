@@ -3,7 +3,7 @@ import * as React from "react";
 import {useTodoLists} from "../state/TodoListProvider";
 import {THEME_COLORS} from "../state/ThemeColors";
 import {useThemeType} from "../state/ThemeProvider";
-import {Modal, Portal, Text, Checkbox, List, Provider, TextInput} from 'react-native-paper';
+import {Modal, Portal, Checkbox, List, Provider, TextInput} from 'react-native-paper';
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {useToken} from "../state/TokenContext";
@@ -30,7 +30,7 @@ export default function TodoScreen() {
 
     const setChecked= async (id) =>{
         await axios.patch(API_ADDRESS+ '/todo/setChecked/'+id ,{},{headers: { Authorization: `Bearer ${token}`} })
-            .then(function (response) {
+            .then(() => {
                 getData();
             })
             .catch(function (error) {
@@ -41,22 +41,22 @@ export default function TodoScreen() {
         await axios.patch(API_ADDRESS+ '/todo/:id' ,
             {title: new_title, gps_lat: new_gps_lat, gps_long: new_gps_long, date: new_date},
             {headers: { Authorization: `Bearer ${token}`} })
-            .then(function (response) {
+            .then(() => {
                 getData();
             })
             .catch(function (error) {
                 console.log(error);
             })
     }
-    const createTodo= async (new_title, new_gps_lat, new_gps_long, new_date, activeList) =>{
+    const createTodo= async (activeList, new_title, new_gps_lat, new_gps_long, new_date) =>{
         await axios.post(API_ADDRESS+ '/todo' ,
             {title: new_title, gps_lat: new_gps_lat, gps_long: new_gps_long, date: new_date, list_id: activeList},
             {headers: { Authorization: `Bearer ${token}`} })
-            .then(function (response) {
-                this.getData();
+            .then(() => {
+                getData();
             })
             .catch(function (error) {
-                console.log(error);
+                console.log(error.message + ": '" + error.response.data + "'");
             })
     }
     const getData = async () => {
@@ -202,7 +202,9 @@ export default function TodoScreen() {
                             style={styles.buttonInput}
 
                             title="Speichern"
-                            onPress={hideModal}
+                            onPress={() => {
+                                createTodo(activeTodoList, name).then(hideModal)
+                            }}
                             color={darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY}
                         />
 
