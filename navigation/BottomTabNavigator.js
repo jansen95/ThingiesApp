@@ -5,6 +5,7 @@ import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {THEME_COLORS} from "../state/ThemeColors";
 import {useThemeType} from "../state/ThemeProvider";
+import SettingsScreen from "../screens/SettingsScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -26,6 +27,8 @@ export default function BottomTabNavigator() {
                         iconName = focused ? 'calendar' : 'calendar-outline';
                     } else if (route.name === 'Map') {
                         iconName = focused ? 'map-marker' : 'map-marker-outline';
+                    } else if (route.name === 'Settings') {
+                        iconName = focused ? 'tools' : 'tools';
                     }
 
                     return <MaterialCommunityIcons name={iconName}
@@ -47,6 +50,7 @@ export default function BottomTabNavigator() {
             <Tab.Screen name="ToDo's" component={TodoScreen} />
             <Tab.Screen name="Calendar" component={CalendarScreen} />
             <Tab.Screen name="Map" component={MapScreen} />
+            <Tab.Screen name="Settings" component={SettingsScreen} />
         </Tab.Navigator>
     )
 }

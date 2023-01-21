@@ -12,6 +12,7 @@ import axios from "axios";
 import {Alert} from "react-native";
 import {TokenContext} from "../state/TokenContext";
 import {AUTH_SERVER_ADDRESS} from "../ENV";
+import {UserNameContext} from "../state/UserNameContext";
 
 export default function LoginStackNavigator() {
     const [state, dispatch] = React.useReducer(
@@ -21,6 +22,8 @@ export default function LoginStackNavigator() {
                     return {
                         ...prevState,
                         userToken: action.token,
+                        firstName: action.firstName,
+                        lastName: action.lastName,
                         isLoading: false,
                     };
                 case 'SIGN_IN':
@@ -28,12 +31,16 @@ export default function LoginStackNavigator() {
                         ...prevState,
                         isSignout: false,
                         userToken: action.token,
+                        firstName: action.firstName,
+                        lastName: action.lastName,
                     };
                 case 'SIGN_OUT':
                     return {
                         ...prevState,
                         isSignout: true,
                         userToken: null,
+                        firstName: null,
+                        lastName: null,
                     };
             }
         },
@@ -41,6 +48,8 @@ export default function LoginStackNavigator() {
             isLoading: true,
             isSignout: false,
             userToken: null,
+            firstName: null,
+            lastName: null,
         }
     );
 
@@ -48,9 +57,13 @@ export default function LoginStackNavigator() {
         // Fetch the token from storage then navigate to our appropriate place
         const bootstrapAsync = async () => {
             let userToken;
+            let firstName;
+            let lastName;
 
             try {
                 userToken = await SecureStore.getItemAsync('userToken');
+                firstName = await SecureStore.getItemAsync('firstName');
+                lastName = await SecureStore.getItemAsync('lastName');
             } catch (e) {
                 // Restoring token failed
             }
@@ -59,7 +72,7 @@ export default function LoginStackNavigator() {
 
             // This will switch to the App screen or Auth screen and this loading
             // screen will be unmounted and thrown away.
-            dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+            dispatch({ type: 'RESTORE_TOKEN', token: userToken, firstName: firstName, lastName: lastName });
         };
 
         bootstrapAsync().then();
@@ -82,16 +95,23 @@ export default function LoginStackNavigator() {
                 })
                 .then(res => {
                     const accessToken = res.data.accessToken
-                    console.log(accessToken)
+                    const firstName = res.data.first_name
+                    const lastName = res.data.last_name
                     SecureStore.setItemAsync('userToken', accessToken)
-                    dispatch({ type: 'SIGN_IN', token: accessToken });
+                    SecureStore.setItemAsync('firstName', firstName)
+                    SecureStore.setItemAsync('lastName', lastName)
+                    dispatch({ type: 'SIGN_IN', token: accessToken, firstName: firstName, lastName: lastName });
                 })
                 .catch(function (error) {
                     //console.log(error.response.data);
                     Alert.alert(error.message +  ": " + error.response.data)
                 });
             },
-            signOut: () => dispatch({ type: 'SIGN_OUT' }),
+            signOut: () => {
+                SecureStore.deleteItemAsync('userToken')
+                    .then( dispatch({ type: 'SIGN_OUT' }) )
+            }
+            ,
             signUp: async (data) => {
                 // In a production app, we need to send user data to server and get a token
                 // We will also need to handle errors if sign up failed
@@ -110,24 +130,26 @@ export default function LoginStackNavigator() {
     return (
         <AuthContext.Provider value={authContext}>
             <TokenContext.Provider value={state.userToken}>
-                <Stack.Navigator
-                    screenOptions={{
-                        headerStyle: {
-                            backgroundColor: darkTheme ? THEME_COLORS.DARK_THEME.BACKGROUND:THEME_COLORS.LIGHT_THEME.BACKGROUND,
-                        },
-                        headerTintColor: darkTheme ? THEME_COLORS.DARK_THEME.ON_BACKGROUND:THEME_COLORS.LIGHT_THEME.ON_BACKGROUND,
-                        headerRight: () => (<ThemeToggleSwitch/>),
-                    }}
-                >
-                    {state.userToken == null ? (
-                        <>
-                            <Stack.Screen name="SignIn" component={SignInScreen} />
-                            <Stack.Screen name="SignUp" component={SignUpScreen} />
-                        </>
-                    ) : (
-                        <Stack.Screen options={{headerShown: false}} name="Main" component={MainScreen} />
-                    )}
-                </Stack.Navigator>
+                <UserNameContext.Provider value={[state.firstName, state.lastName]}>
+                    <Stack.Navigator
+                        screenOptions={{
+                            headerStyle: {
+                                backgroundColor: darkTheme ? THEME_COLORS.DARK_THEME.BACKGROUND:THEME_COLORS.LIGHT_THEME.BACKGROUND,
+                            },
+                            headerTintColor: darkTheme ? THEME_COLORS.DARK_THEME.ON_BACKGROUND:THEME_COLORS.LIGHT_THEME.ON_BACKGROUND,
+                            headerRight: () => (<ThemeToggleSwitch/>),
+                        }}
+                    >
+                        {state.userToken == null ? (
+                            <>
+                                <Stack.Screen name="SignIn" component={SignInScreen} />
+                                <Stack.Screen name="SignUp" component={SignUpScreen} />
+                            </>
+                        ) : (
+                            <Stack.Screen options={{headerShown: false}} name="Main" component={MainScreen} />
+                        )}
+                    </Stack.Navigator>
+                </UserNameContext.Provider>
             </TokenContext.Provider>
         </AuthContext.Provider>
     );

@@ -1,9 +1,9 @@
-import {View,ScrollView, StyleSheet, TouchableOpacity} from "react-native";
+import {View, ScrollView, StyleSheet, TouchableOpacity, Button} from "react-native";
 import * as React from "react";
 import {useTodoLists} from "../state/TodoListProvider";
 import {THEME_COLORS} from "../state/ThemeColors";
 import {useThemeType} from "../state/ThemeProvider";
-import {Checkbox,List} from 'react-native-paper';
+import {Modal, Portal, Checkbox, List, Provider, TextInput} from 'react-native-paper';
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {useToken} from "../state/TokenContext";
@@ -30,7 +30,7 @@ export default function TodoScreen() {
 
     const setChecked= async (id) =>{
         await axios.patch(API_ADDRESS+ '/todo/setChecked/'+id ,{},{headers: { Authorization: `Bearer ${token}`} })
-            .then(function (response) {
+            .then(() => {
                 getData();
             })
             .catch(function (error) {
@@ -41,22 +41,22 @@ export default function TodoScreen() {
         await axios.patch(API_ADDRESS+ '/todo/:id' ,
             {title: new_title, gps_lat: new_gps_lat, gps_long: new_gps_long, date: new_date},
             {headers: { Authorization: `Bearer ${token}`} })
-            .then(function (response) {
+            .then(() => {
                 getData();
             })
             .catch(function (error) {
                 console.log(error);
             })
     }
-    const createTodo= async (new_title, new_gps_lat, new_gps_long, new_date, activeList) =>{
+    const createTodo= async (activeList, new_title, new_gps_lat, new_gps_long, new_date) =>{
         await axios.post(API_ADDRESS+ '/todo' ,
             {title: new_title, gps_lat: new_gps_lat, gps_long: new_gps_long, date: new_date, list_id: activeList},
             {headers: { Authorization: `Bearer ${token}`} })
-            .then(function (response) {
-                this.getData();
+            .then(() => {
+                getData();
             })
             .catch(function (error) {
-                console.log(error);
+                console.log(error.message + ": '" + error.response.data + "'");
             })
     }
     const getData = async () => {
@@ -75,11 +75,7 @@ export default function TodoScreen() {
         getData().then()
     }, []);
 
-    const onAddButtonPress=()=>{
-        console.log("Add pressed")
-        //createTodo("New task",0.0,0.0,null,activeTodoList);
 
-    }
 
     databaseTodoItems.map((todo) => {
         if (todo.list_id === activeTodoList || activeTodoList === 0) {
@@ -142,28 +138,80 @@ export default function TodoScreen() {
         }
     })
     */
+    const [visible, setVisible] = React.useState(false);
 
+    const showModal = () => setVisible(true);
+    const hideModal = () => setVisible(false);
+
+    const onAddButtonPress=()=>{
+        showModal();
+        console.log("Add pressed ");
+        //let id = createTodo("New task",0.0,0.0,null,activeTodoList);
+    }
+    const [name, setName] = React.useState('');
+    const [gpsLat, setGpsLat] = React.useState('');
+    const [gpsLong, setGpsLong] = React.useState('');
+    const [todoDate, setTodoDate] = React.useState('');
 
     return(
-        <View>
-            <ScrollView style={{}}>
+        <Provider>
+            <View>
+                <ScrollView style={{}}>
 
-                {todoItems}
+                    {todoItems}
 
-            </ScrollView>
+                </ScrollView>
 
-            <TouchableOpacity
-                style={styles.floatingButton}
-                onPress={onAddButtonPress}
-            >
+                <TouchableOpacity
+                    style={styles.floatingButton}
+                    onPress={onAddButtonPress}
+                >
+                    <MaterialCommunityIcons
+                        name="plus-circle"
+                        size={50}
+                        color={(darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY)}
+                    />
+                </TouchableOpacity>
+                <Portal>
+                    <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContainer}
+                           backgroundColor = {darkTheme ?
+                               THEME_COLORS.DARK_THEME.SURFACE + THEME_COLORS.DARK_THEME.ON_SURFACE_OPACITY.HIGH_EMPHASIS :
+                               THEME_COLORS.LIGHT_THEME.SURFACE + THEME_COLORS.LIGHT_THEME.ON_SURFACE_OPACITY.MEDIUM_EMPHASIS}
+                    >
+                        <TextInput
+                            style={styles.textInput}
+                            label="ToDo Name: "
+                            onChangeText={setName}
+                        />
+                        <TextInput
+                            style={styles.textInput}
+                            label="GPS Latitude: "
+                            onChangeText={setGpsLat}
+                        />
+                        <TextInput
+                            style={styles.textInput}
+                            label="GPS Longitude: "
+                            onChangeText={setGpsLong}
+                        />
+                        <TextInput
+                            style={styles.textInput}
+                            label="Datum: "
+                            onChangeText={setTodoDate}
+                        />
+                        <Button
+                            style={styles.buttonInput}
 
-                <MaterialCommunityIcons
-                    name="plus-circle"
-                    size={50}
-                    color={(darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY)}
-                />
-            </TouchableOpacity>
-        </View>
+                            title="Speichern"
+                            onPress={() => {
+                                createTodo(activeTodoList, name).then(hideModal)
+                            }}
+                            color={darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY}
+                        />
+
+                    </Modal>
+                </Portal>
+            </View>
+        </Provider>
     )
 }
 
@@ -180,11 +228,13 @@ const styles = StyleSheet.create({
         right: 30,
         bottom:30,
     },
-    fab: {
-        position: 'absolute',
-        margin: 16,
-        right: 0,
-        bottom: 0,
+    modalContainer:{
+        paddingLeft:'10%',
+        paddingRight:'8%'
+    },
+    textInput: {
+    },
+    buttonInput: {
     },
 });
 
