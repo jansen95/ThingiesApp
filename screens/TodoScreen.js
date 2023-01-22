@@ -102,7 +102,7 @@ export default function TodoScreen() {
                         color =  {darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY}
                     />}
                     right={props =>
-                        <TouchableOpacity onPress={showEditModal}  style={styles.editButton}>
+                        <TouchableOpacity onPress={()=>editTodoPressed(todo)}  style={styles.editButton}>
                             <List.Icon {...props} icon="equal"  />
                         </TouchableOpacity>
                     }
@@ -143,25 +143,27 @@ export default function TodoScreen() {
     })
     */
     const [addVisible, setAddVisible] = React.useState(false);
-
     const showAddModal = () => setAddVisible(true);
     const hideAddModal = () => setAddVisible(false);
 
-
-
-
     const [editVisible, setEditVisible] = React.useState(false);
-
     const showEditModal = () => setEditVisible(true);
     const hideEditModal = () => setEditVisible(false);
 
-
+    const [currentID, setCurrentID] = React.useState(0);
     const [name, setName] = React.useState('');
     const [gpsLat, setGpsLat] = React.useState('');
     const [gpsLong, setGpsLong] = React.useState('');
     const [todoDate, setTodoDate] = React.useState('');
 
-
+    function editTodoPressed(todo) {
+        setCurrentID(todo.id);
+        setName(todo.title)
+        setGpsLat(todo.gps_lat)
+        setGpsLong(todo.gps_long)
+        setTodoDate(todo.date)
+        showEditModal();
+    }
     return(
         <Provider>
             <View style={styles.container}>
@@ -197,7 +199,7 @@ export default function TodoScreen() {
 
                             title="Speichern"
                             onPress={() => {
-                                createTodo(activeTodoList, name).then(hideEditModal)
+                                createTodo(activeTodoList, name).then(hideAddModal)
                             }}
                             color={darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY}
                         />
@@ -211,28 +213,34 @@ export default function TodoScreen() {
                         <TextInput
                             style={styles.textInput}
                             label="ToDo Name: "
+                            value={name}
                             onChangeText={setName}
                         />
                         <TextInput
                             style={styles.textInput}
                             label="GPS Latitude: "
+                            value={""+gpsLat}
                             onChangeText={setGpsLat}
                         />
                         <TextInput
                             style={styles.textInput}
                             label="GPS Longitude: "
+                            value={""+gpsLong}
                             onChangeText={setGpsLong}
                         />
                         <TextInput
                             style={styles.textInput}
                             label="Datum: "
+                            value={""+todoDate}
                             onChangeText={setTodoDate}
                         />
                         <Button
                             style={styles.buttonInput}
 
                             title="Speichern"
-                            onPress={hideAddModal}
+                            onPress={() => {
+                                patchTodo(currentID, name,gpsLat,gpsLong,todoDate).then(hideEditModal)
+                            }}
                             color={darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY}
                         />
                     </Modal>
