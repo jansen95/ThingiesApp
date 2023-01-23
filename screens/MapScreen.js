@@ -78,7 +78,7 @@ export default function MapScreen() {
                         region={mapRegion}
                     >
                         {databaseTodoItems.map((todo) => {
-                            if ((todo.list_id === activeTodoList || activeTodoList === 0)&&!todo.checked) {
+                            if ((todo.list_id === activeTodoList || activeTodoList === 0)&&!todo.checked&&todo.gps_long!=null&&todo.gps_lat!=null) {
                                 return (
                                     <Marker
                                         key = {todo.id}
