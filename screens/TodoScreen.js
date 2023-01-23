@@ -38,7 +38,7 @@ export default function TodoScreen() {
             })
     }
     const patchTodo= async (id, new_title, new_gps_lat, new_gps_long, new_date) =>{
-        await axios.patch(API_ADDRESS+ '/todo/:id' ,
+        await axios.patch(API_ADDRESS+ '/todo/'+id ,
             {title: new_title, gps_lat: new_gps_lat, gps_long: new_gps_long, date: new_date},
             {headers: { Authorization: `Bearer ${token}`} })
             .then(() => {
@@ -151,12 +151,14 @@ export default function TodoScreen() {
     const hideEditModal = () => setEditVisible(false);
 
     const [currentID, setCurrentID] = React.useState(0);
+    const [currentTodo, setCurrentTodo] = React.useState('');
     const [name, setName] = React.useState('');
     const [gpsLat, setGpsLat] = React.useState('');
     const [gpsLong, setGpsLong] = React.useState('');
     const [todoDate, setTodoDate] = React.useState('');
 
     function editTodoPressed(todo) {
+        setCurrentTodo(todo);
         setCurrentID(todo.id);
         setName(todo.title)
         setGpsLat(todo.gps_lat)
@@ -168,9 +170,7 @@ export default function TodoScreen() {
         <Provider>
             <View style={styles.container}>
                 <ScrollView style={{}}>
-
                     {todoItems}
-
                 </ScrollView>
 
                 <TouchableOpacity
@@ -183,6 +183,8 @@ export default function TodoScreen() {
                         color={(darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY)}
                     />
                 </TouchableOpacity>
+
+
                 <Portal>
                     <Modal visible={addVisible} onDismiss={hideAddModal} contentContainerStyle={styles.modalContainer}
                            backgroundColor = {darkTheme ?
