@@ -24,10 +24,18 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "work.jansen.thingies"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "authServerUrl": "process.env.AUTH_SERVER_ADDRESS",
+      "apiUrl": "process.env.API_ADDRESS",
+      "eas": {
+        "projectId": "ebbbac9e-e0c6-4e56-ab32-7cf05a87e73a"
+      }
     }
   }
 }

@@ -11,7 +11,7 @@ import ThemeToggleSwitch from "../components/ThemeToggleSwitch";
 import axios from "axios";
 import {Alert} from "react-native";
 import {TokenContext} from "../state/TokenContext";
-import {AUTH_SERVER_ADDRESS} from "../ENV";
+import {AUTH_SERVER_ADDRESS} from '@env';
 import {UserNameContext} from "../state/UserNameContext";
 
 export default function LoginStackNavigator() {

@@ -8,6 +8,7 @@ import { useColorScheme } from 'react-native';
 import * as NavigationBar from "expo-navigation-bar";
 import {THEME_COLORS} from "./state/ThemeColors";
 import * as Device from 'expo-device';
+import {GestureHandlerRootView} from "react-native-gesture-handler";
 
 
 
@@ -23,15 +24,17 @@ export default function App() {
     }
 
     return (
-        <TodoListProvider>
-            <ThemeProvider>
-                <CustomStatusBar></CustomStatusBar>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <TodoListProvider>
+                <ThemeProvider>
+                    <CustomStatusBar></CustomStatusBar>
                     <NavigationContainer>
                         <LoginStackNavigator>
                             {/*<TodoListsTextScreen/>*/}
                         </LoginStackNavigator>
                     </NavigationContainer>
-            </ThemeProvider>
-        </TodoListProvider>
+                </ThemeProvider>
+            </TodoListProvider>
+        </GestureHandlerRootView>
     );
 }
