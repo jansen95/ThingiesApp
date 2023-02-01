@@ -3,14 +3,13 @@ import BottomTabNavigator from "./BottomTabNavigator";
 import * as React from "react";
 import {createDrawerNavigator} from "@react-navigation/drawer";
 import {useThemeType} from "../state/ThemeProvider";
-import {useTodoLists} from "../state/TodoListProvider";
 import DrawerContent from "./DrawerContent";
 import {Button} from "react-native";
 import {AuthContext} from "../state/AuthContext";
 import {useEffect, useState} from "react";
 import {useToken} from "../state/TokenContext";
 import axios from "axios";
-import {API_ADDRESS} from "../ENV";
+import {API_ADDRESS} from '@env';
 
 const Drawer = createDrawerNavigator();
 

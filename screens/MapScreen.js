@@ -8,7 +8,7 @@ import {useTodoLists} from "../state/TodoListProvider";
 import {MARKER_COLORS} from  "../state/ThemeColors";
 import {useToken} from "../state/TokenContext";
 import axios from "axios";
-import {API_ADDRESS} from "../ENV";
+import {API_ADDRESS} from '@env';
 
 
 export default function MapScreen() {

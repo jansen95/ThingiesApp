@@ -7,7 +7,7 @@ import {Modal, Portal, Checkbox, List, Provider, TextInput} from 'react-native-p
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {useToken} from "../state/TokenContext";
-import {API_ADDRESS} from "../ENV";
+import {API_ADDRESS} from '@env';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 
