@@ -94,7 +94,7 @@ export default function TodoScreen() {
                         color: darkTheme ? THEME_COLORS.DARK_THEME.ON_SURFACE + THEME_COLORS.DARK_THEME.ON_SURFACE_OPACITY.MEDIUM_EMPHASIS
                             : THEME_COLORS.LIGHT_THEME.ON_SURFACE + THEME_COLORS.LIGHT_THEME.ON_SURFACE_OPACITY.MEDIUM_EMPHASIS
                     }}
-                    left={() => <Checkbox
+                    left={() => <Checkbox.Android
                         status={todo.checked ? 'checked' : 'unchecked'}
                         onPress={() => {
                             setChecked(todo.id);

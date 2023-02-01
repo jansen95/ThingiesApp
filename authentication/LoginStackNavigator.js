@@ -9,7 +9,7 @@ import {useThemeType} from "../state/ThemeProvider";
 import {THEME_COLORS} from "../state/ThemeColors";
 import ThemeToggleSwitch from "../components/ThemeToggleSwitch";
 import axios from "axios";
-import {Alert} from "react-native";
+import {Alert, Vibration} from "react-native";
 import {TokenContext} from "../state/TokenContext";
 import {AUTH_SERVER_ADDRESS} from '@env';
 import {UserNameContext} from "../state/UserNameContext";
@@ -104,7 +104,12 @@ export default function LoginStackNavigator() {
                 })
                 .catch(function (error) {
                     //console.log(error.response.data);
-                    Alert.alert(error.message +  ": " + error.response.data)
+                    Vibration.vibrate();
+                    if (error.response.status === 400){
+                        Alert.alert('User or password is incorrect')
+                    } else if (error.response.status !== 400){
+                        Alert.alert(error.message +  ": " + error.response.data)
+                    }
                 });
             },
             signOut: () => {
