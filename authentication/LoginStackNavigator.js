@@ -105,7 +105,7 @@ export default function LoginStackNavigator() {
                 .catch(function (error) {
                     if (error.response === undefined){
                         Vibration.vibrate()
-                        Alert.alert('Something went wrong')
+                        Alert.alert('No connection to Database')
                     } else if (error.response.status === 400){
                         Vibration.vibrate()
                         Alert.alert('User or password is incorrect')
