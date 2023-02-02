@@ -6,13 +6,15 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {API_ADDRESS} from '@env';
 import {useToken} from "../state/TokenContext";
-import {ScrollView} from "react-native";
+import {ScrollView, StyleSheet, TouchableOpacity, View} from "react-native";
 import {useThemeType} from "../state/ThemeProvider";
 import {TextInput} from "react-native-paper";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function DrawerContent(props) {
     const [todosLists, dispatchTodoLists, activeList, setActiveList] = useTodoLists();
     const [databaseLists, setDatabaseLists] = useState([{"title": "List"}]);
+    const [newListName, setNewListName] = useState('');
     const token = useToken();
     const darkTheme = useThemeType();
 
@@ -60,15 +62,35 @@ export default function DrawerContent(props) {
                     />
                 })}
             </ScrollView>
-
-            <TextInput
-                style={{borderColor: darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY,}}
-                label="New List"
-                onSubmit={() => {console.log("submit")}}
-                onChangeText={() => {}}
-            />
-
+            <View style={{flexDirection: "row", alignItems: "center"}}>
+                <TextInput
+                    style={{flex: 8, borderColor: darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY,}}
+                    label="New List"
+                    //onSubmit={() => {console.log("submit")}}
+                    onChangeText={setNewListName}
+                />
+                <View style={{flex: 2, alignItems: "center"}}>
+                    <TouchableOpacity style={styles.floatingButton}>
+                        <MaterialCommunityIcons
+                            name="plus-circle"
+                            size={50}
+                            color={(darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY)}
+                        />
+                    </TouchableOpacity>
+                </View>
+            </View>
         </DrawerContentScrollView>
 
     )
 }
+
+const styles = StyleSheet.create({
+
+    floatingButton: {
+        width: 60,
+        height:60,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+});
