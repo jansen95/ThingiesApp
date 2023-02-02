@@ -18,19 +18,36 @@ export default function DrawerContent(props) {
     const token = useToken();
     const darkTheme = useThemeType();
 
+    const getLists = async () => {
+        await axios.get(API_ADDRESS + '/lists', {headers: { Authorization: `Bearer ${token}` }})
+            .then(function (response) {
+                // handle success
+                setDatabaseLists(response.data);
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+    }
+
+    async function sendNewList() {
+        //console.log("Hi")
+        console.log(newListName)
+
+        await axios.post(API_ADDRESS + '/list',
+            {title: newListName},
+            {headers: {Authorization: `Bearer ${token}`}})
+            .then(() => {
+                getLists()
+            })
+            .catch(function (error) {
+                console.log(error.message + ": '" + error.response.data + "'");
+            })
+        setNewListName('')
+    }
+
 
     useEffect(() => {
-        const getLists = async () => {
-            await axios.get(API_ADDRESS + '/lists', {headers: { Authorization: `Bearer ${token}` }})
-                .then(function (response) {
-                    // handle success
-                    setDatabaseLists(response.data);
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-        }
         getLists().then()
     }, []);
 
@@ -66,11 +83,11 @@ export default function DrawerContent(props) {
                 <TextInput
                     style={{flex: 8, borderColor: darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY,}}
                     label="New List"
-                    //onSubmit={() => {console.log("submit")}}
+                    value={newListName}
                     onChangeText={setNewListName}
                 />
                 <View style={{flex: 2, alignItems: "center"}}>
-                    <TouchableOpacity style={styles.floatingButton}>
+                    <TouchableOpacity style={styles.floatingButton} onPress={sendNewList}>
                         <MaterialCommunityIcons
                             name="plus-circle"
                             size={50}
