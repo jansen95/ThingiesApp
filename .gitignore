@@ -15,3 +15,5 @@ web-build/
 
 .env
 ENV.js
+eas.json
+app.json

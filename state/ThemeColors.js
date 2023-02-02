@@ -6,6 +6,7 @@ export const THEME_COLORS = {
         BACKGROUND: "#121212",
         SURFACE: "#121212",
         ERROR: "#CF6679",
+        ON_PRIMARY: "#FFFFFF",
         ON_SECONDARY: "#000000",
         ON_BACKGROUND: "#FFFFFF",
         ON_SURFACE: "#FFFFFF",
