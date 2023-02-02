@@ -75,7 +75,7 @@ export default function CalendarScreen() {
     let agendaItem = {};
 
     databaseTodoItems.map((todo) => {
-        if(todo.list_id === activeTodoList || activeTodoList === 0&&todo.date!=null){
+        if((todo.list_id === activeTodoList || activeTodoList === 0)&&todo.date!=null){
 
             agendaItem[todo.date.substring(0, 10)]= [{
                     name: todo.title
