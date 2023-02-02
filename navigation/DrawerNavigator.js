@@ -22,7 +22,6 @@ export default function DrawerNavigator() {
     const [databaseLists, setDatabaseLists] = useState([{"title": "List"}]);
     const token = useToken();
 
-
     useEffect(() => {
         const getLists = async () => {
             await axios.get(API_ADDRESS + '/lists', {headers: { Authorization: `Bearer ${token}` }})

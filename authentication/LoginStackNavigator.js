@@ -8,7 +8,7 @@ import SignUpScreen from "../screens/SignUpScreen";
 import {useThemeType} from "../state/ThemeProvider";
 import {THEME_COLORS} from "../state/ThemeColors";
 import ThemeToggleSwitch from "../components/ThemeToggleSwitch";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 import {Alert, Vibration} from "react-native";
 import {TokenContext} from "../state/TokenContext";
 import {AUTH_SERVER_ADDRESS} from '@env';
@@ -103,12 +103,15 @@ export default function LoginStackNavigator() {
                     dispatch({ type: 'SIGN_IN', token: accessToken, firstName: firstName, lastName: lastName });
                 })
                 .catch(function (error) {
-                    //console.log(error.response.data);
-                    Vibration.vibrate();
-                    if (error.response.status === 400){
+                    if (error.response === undefined){
+                        Vibration.vibrate()
+                        Alert.alert('No connection to Database')
+                    } else if (error.response.status === 400){
+                        Vibration.vibrate()
                         Alert.alert('User or password is incorrect')
-                    } else if (error.response.status !== 400){
-                        Alert.alert(error.message +  ": " + error.response.data)
+                    } else if (error.response.status !== 400) {
+                        Vibration.vibrate()
+                        Alert.alert(error.message + ": " + error.response.data)
                     }
                 });
             },
