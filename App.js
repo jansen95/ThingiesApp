@@ -78,6 +78,8 @@ export default function App() {
             console.log(response);
         });
 
+        schedulePushNotification()
+
         return () => {
             Notifications.removeNotificationSubscription(notificationListener.current);
             Notifications.removeNotificationSubscription(responseListener.current);
@@ -99,4 +101,15 @@ export default function App() {
             </TodoListProvider>
         </GestureHandlerRootView>
     );
+
+    async function schedulePushNotification() {
+        await Notifications.scheduleNotificationAsync({
+            content: {
+                title: "Thank you for choosing the ThingiesApp ",
+                body: 'We will send you notifications!',
+                data: { data: 'goes here' },
+            },
+            trigger: { seconds: 10 },
+        });
+    }
 }
