@@ -1,18 +1,30 @@
-import React, {useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
+import { useColorScheme, Platform } from 'react-native';
 import ThemeProvider from "./state/ThemeProvider";
 import TodoListProvider from "./state/TodoListProvider";
 import {NavigationContainer} from "@react-navigation/native";
 import LoginStackNavigator from "./authentication/LoginStackNavigator";
 import CustomStatusBar from "./components/CustomStatusBar";
-import { useColorScheme, Platform } from 'react-native';
 import * as NavigationBar from "expo-navigation-bar";
 import {THEME_COLORS} from "./state/ThemeColors";
-import * as Device from 'expo-device';
 import {GestureHandlerRootView} from "react-native-gesture-handler";
 import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
 
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+    }),
+});
 
 export default function App() {
+    const [expoPushToken, setExpoPushToken] = useState('');
+    const [notification, setNotification] = useState(false);
+    const notificationListener = useRef();
+    const responseListener = useRef();
     let colorScheme = useColorScheme(); //OS Theme
 
     //console.log(Device.deviceName)
@@ -23,7 +35,7 @@ export default function App() {
         ).then()
     }
 
-    async function registerForPushNotificationsAsync() {
+    const registerForPushNotificationsAsync= async () => {
         let token;
 
         if (Platform.OS === 'android') {
@@ -54,10 +66,24 @@ export default function App() {
 
         return token;
     }
+    //*
+    useEffect(() => {
+        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
-    useEffect(() =>{
-        (()=> registerForPushNotificationsAsync())();
-    },[]);//*/
+        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+            setNotification(notification);
+        });
+
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+            console.log(response);
+        });
+
+        return () => {
+            Notifications.removeNotificationSubscription(notificationListener.current);
+            Notifications.removeNotificationSubscription(responseListener.current);
+        };
+    }, []);
+
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
