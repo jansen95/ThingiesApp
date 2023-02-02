@@ -4,18 +4,18 @@ import * as React from "react";
 import {createDrawerNavigator} from "@react-navigation/drawer";
 import {useThemeType} from "../state/ThemeProvider";
 import DrawerContent from "./DrawerContent";
-import {Button} from "react-native";
+import {Alert} from "react-native";
 import {AuthContext} from "../state/AuthContext";
 import {useEffect, useState} from "react";
 import {useToken} from "../state/TokenContext";
 import axios from "axios";
 import {API_ADDRESS} from '@env';
+import {IconButton} from "react-native-paper";
 
 const Drawer = createDrawerNavigator();
 
 
 export default function DrawerNavigator() {
-    const { signOut } = React.useContext(AuthContext);
     const darkTheme = useThemeType();
     //const [todoLists] = useTodoLists();
 
@@ -38,6 +38,13 @@ export default function DrawerNavigator() {
         getLists().then()
     }, []);
 
+    function addUser() {
+        Alert.alert("'Add user'-Feature not implemented, yet")
+        //open Modal
+        //get email
+        //send email & active list
+    }
+
     return(
         <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}
                           screenOptions={{
@@ -47,11 +54,13 @@ export default function DrawerNavigator() {
                               headerTintColor: darkTheme ? THEME_COLORS.DARK_THEME.ON_BACKGROUND : THEME_COLORS.LIGHT_THEME.ON_BACKGROUND,
                               tabBarColor: darkTheme ? THEME_COLORS.DARK_THEME.ON_BACKGROUND : THEME_COLORS.LIGHT_THEME.ON_BACKGROUND,
                               headerRight: () => (
-                                  <Button title={"Logout"}
-                                          color={darkTheme ? THEME_COLORS.DARK_THEME.PRIMARY : THEME_COLORS.LIGHT_THEME.PRIMARY}
-                                          onPress={() => signOut()}
+                                  <IconButton
+                                      icon="account-multiple-plus"
+                                      iconColor={darkTheme ? THEME_COLORS.DARK_THEME.ON_BACKGROUND : THEME_COLORS.LIGHT_THEME.ON_BACKGROUND}
+                                      size={20}
+                                      onPress={addUser}
                                   />
-                              ),
+                              )
                           }}
         >
             <Drawer.Screen key={"All List"} name={"All List"} component={BottomTabNavigator}/>
